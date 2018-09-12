@@ -1,0 +1,21 @@
+language:
+  - node_js
+
+node_js:
+  - 8
+  - 9
+  - 10
+
+addons:
+  sonarcloud:
+    organization: "memory-cloud"
+
+services:
+  - mysql
+
+install:
+  - npm install
+
+script:
+  - npm run travis-test
+  - sonar-scanner -Dsonar.projectKey=backend-memorycloud -Dsonar.organization=memory-cloud -Dsonar.sources=./src -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN

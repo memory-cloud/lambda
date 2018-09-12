@@ -1,0 +1,16 @@
+type ScoreInt {
+    id: BigInt
+    score: BigInt
+}
+
+type ScoreFloat {
+    id: BigInt
+    score: Float
+}
+
+type Query {
+    LeaderboardFriends(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @isPlayer
+    Leaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @isPlayer
+    LeaderboardFloat(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @isPlayer
+    LeaderboardFloatFriends(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @isPlayer
+}

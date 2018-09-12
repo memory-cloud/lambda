@@ -1,0 +1,45 @@
+scalar BigInt
+
+type Admin {
+    email: String
+}
+
+type Game {
+    id: Int
+    name: String
+    appid: BigInt
+    secret: String
+    achievements: [Achievement]
+    players: Int
+}
+
+type Achievement {
+    id: Int
+    title: String
+    description: String
+}
+
+input GameInput {
+    appid: BigInt!
+    secret: String!
+    name: String!
+}
+
+input AchievementInput {
+    id: Int
+    title: String!
+    description: String!
+    gameId: Int!
+}
+
+type Query {
+    me: Admin @isAdmin
+    games: [Game] @isAdmin
+    game(id: Int!): Game @isAdmin
+}
+
+type Mutation {
+    createGame(game: GameInput!): Game @isAdmin
+    createAchievement(achievement: AchievementInput!): Achievement @isAdmin
+    updateAchievement(achievement: AchievementInput!): Achievement @isAdmin
+}

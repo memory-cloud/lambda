@@ -1,0 +1,61 @@
+type State {
+    integers: [IntegerDict]
+    floats: [FloatDict]
+    booleans: [BooleanDict]
+    strings: [StringDict]
+}
+
+input StateInput {
+    integers: [IntegerDictInput]
+    floats: [FloatDictInput]
+    booleans: [BooleanDictInput]
+    strings: [StringDictInput]
+}
+
+type StringDict {
+    key: String
+    value: String
+}
+
+type IntegerDict {
+    key: String
+    value: Int
+}
+
+type FloatDict {
+    key: String
+    value: Float
+}
+
+type BooleanDict {
+    key: String
+    value: Boolean
+}
+
+input StringDictInput {
+    key: String!
+    value: String!
+}
+
+input IntegerDictInput {
+    key: String!
+    value: Int!
+}
+
+input FloatDictInput {
+    key: String!
+    value: Float!
+}
+
+input BooleanDictInput {
+    key: String!
+    value: Boolean!
+}
+
+type Query {
+    Load: State @isPlayer
+}
+
+type Mutation {
+    Save(integers: [IntegerDictInput], floats: [FloatDictInput], strings: [StringDictInput], booleans: [BooleanDictInput]) : Boolean @isPlayer
+}

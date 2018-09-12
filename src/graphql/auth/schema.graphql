@@ -1,0 +1,12 @@
+directive @isPlayer on QUERY | FIELD_DEFINITION
+directive @isAdmin on QUERY | FIELD_DEFINITION
+
+type Query {
+    login(email: String!, password: String!): String
+}
+
+type Mutation {
+    register(email: String!, password: String!) : String
+    changePassword(oldPassword: String!, newPassword: String!): Boolean @isAdmin
+    rememberPassword(email: String!): String @isAdmin
+}
