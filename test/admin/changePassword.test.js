@@ -1,6 +1,6 @@
-process.env.DEBUG = 'test:login'
+process.env.DEBUG = 'test:admin'
 
-const debug = require('debug')('test:admin')
+// const debug = require('debug')('test:admin')
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database')
@@ -45,9 +45,8 @@ describe('A logged in admin', function () {
       .send(mutationChangePassword)
       .expect(200)
       .expect(res => {
-        debug(res.body)
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.changePassword).toBeDefined()
+        expect(res.body.data.changePassword).toBe(true)
       })
   })
 
@@ -62,7 +61,22 @@ describe('A logged in admin', function () {
       .send(mutationChangePassword)
       .expect(200)
       .expect(res => {
-        debug(res.body)
+        expect(res.body.errors).toHaveLength(1)
+        expect(res.body.data.changePassword).toBeNull()
+      })
+  })
+
+  it('should not change password with invalid password', () => {
+    mutationChangePassword.variables = {
+      oldPassword: 'password',
+      newPassword: 'ii'
+    }
+    return request(server)
+      .post('/')
+      .set('admin', token)
+      .send(mutationChangePassword)
+      .expect(200)
+      .expect(res => {
         expect(res.body.errors).toHaveLength(1)
         expect(res.body.data.changePassword).toBeNull()
       })
