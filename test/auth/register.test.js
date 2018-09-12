@@ -4,7 +4,7 @@ process.env.DEBUG = 'test:register'
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database')
-const { mutationRegister } = require('./graphql')
+const { mutationRegister } = require('../graphql')
 describe('A user', function () {
   var server
 

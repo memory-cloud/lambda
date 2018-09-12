@@ -4,7 +4,7 @@ process.env.DEBUG = 'test:login'
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database')
-const { mutationRegister, queryLogin } = require('./graphql')
+const { mutationRegister, queryLogin } = require('../graphql')
 
 describe('A user', function () {
   var server

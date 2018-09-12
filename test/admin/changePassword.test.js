@@ -4,7 +4,7 @@ const debug = require('debug')('test:admin')
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database')
-const { mutationRegister, mutationChangePassword } = require('./graphql')
+const { mutationRegister, mutationChangePassword } = require('../graphql')
 
 describe('A logged in admin', function () {
   var server
