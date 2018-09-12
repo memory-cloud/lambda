@@ -4,14 +4,10 @@ process.env.DEBUG = 'test:login'
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database')
+const { mutationRegister, queryLogin } = require('./graphql')
 
 describe('A user', function () {
   var server
-  var loginQuery = {
-    query: `query ($email: String!, $password: String!){
-                login(email: $email password: $password)
-            }`
-  }
 
   beforeAll(async () => {
     server = await app.listen()
@@ -21,18 +17,13 @@ describe('A user', function () {
   beforeEach(async () => {
     await database.sync(true)
 
-    let postData = {
-      query: `mutation register($email: String!, $password: String!){
-                  register(email: $email password: $password)
-              }`,
-      variables: {
-        email: 'existent@user.com',
-        password: 'password'
-      }
+    mutationRegister.variables = {
+      email: 'existent@user.com',
+      password: 'password'
     }
     return request(server)
       .post('/')
-      .send(postData)
+      .send(mutationRegister)
   })
 
   afterAll(async () => {
@@ -42,13 +33,13 @@ describe('A user', function () {
   })
 
   it('should login with right credentials', () => {
-    loginQuery.variables = {
+    queryLogin.variables = {
       email: 'existent@user.com',
       password: 'password'
     }
     return request(server)
       .post('/')
-      .send(loginQuery)
+      .send(queryLogin)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
@@ -57,13 +48,13 @@ describe('A user', function () {
   })
 
   it('should not login with wrong email', () => {
-    loginQuery.variables = {
+    queryLogin.variables = {
       email: 'wrong@user.com',
       password: 'wrongpassword'
     }
     return request(server)
       .post('/')
-      .send(loginQuery)
+      .send(queryLogin)
       .expect(200)
       .expect(res => {
         expect(res.body.data.login).toBeNull()
@@ -72,13 +63,13 @@ describe('A user', function () {
   })
 
   it('should not login with wrong password', () => {
-    loginQuery.variables = {
+    queryLogin.variables = {
       email: 'existent@user.com',
       password: 'wrongpassword'
     }
     return request(server)
       .post('/')
-      .send(loginQuery)
+      .send(queryLogin)
       .expect(200)
       .expect(res => {
         expect(res.body.data.login).toBeNull()

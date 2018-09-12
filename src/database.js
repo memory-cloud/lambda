@@ -1,12 +1,10 @@
-const debug = require('debug')('database')
+// const debug = require('debug')('database')
 const Sequelize = require('sequelize')
 const config = require('./config')[process.env.NODE_ENV]
 
 class Database {
   constructor () {
     if (!Database.instance) {
-      debug(process.env.NODE_ENV)
-      debug(config)
       if (process.env.INIT === 'true') {
         this.createDatabase()
       }

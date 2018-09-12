@@ -4,14 +4,9 @@ process.env.DEBUG = 'test:register'
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database')
-
+const { mutationRegister } = require('./graphql')
 describe('A user', function () {
   var server
-  var registerMutation = {
-    query: `mutation ($email: String!, $password: String!){
-              register(email: $email password: $password)
-            }`
-  }
 
   beforeAll(async () => {
     server = await app.listen()
@@ -21,14 +16,14 @@ describe('A user', function () {
   beforeEach(async () => {
     await database.sync(true)
 
-    registerMutation.variables = {
+    mutationRegister.variables = {
       email: 'existent@user.com',
       password: 'ssssss'
     }
 
     return request(server)
       .post('/')
-      .send(registerMutation)
+      .send(mutationRegister)
   })
 
   afterAll(async () => {
@@ -38,13 +33,13 @@ describe('A user', function () {
   })
 
   it('should register a new user', () => {
-    registerMutation.variables = {
+    mutationRegister.variables = {
       email: 'new@user.com',
       password: 'validpassword'
     }
     return request(server)
       .post('/')
-      .send(registerMutation)
+      .send(mutationRegister)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
@@ -53,13 +48,13 @@ describe('A user', function () {
   })
 
   it('should not register a existent user', () => {
-    registerMutation.variables = {
+    mutationRegister.variables = {
       email: 'existent@user.com',
       password: 'asdasd'
     }
     return request(server)
       .post('/')
-      .send(registerMutation)
+      .send(mutationRegister)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
@@ -68,13 +63,13 @@ describe('A user', function () {
   })
 
   it('should not register a invalid email', () => {
-    registerMutation.variables = {
+    mutationRegister.variables = {
       email: 'invalidemail.com',
       password: 'dddddd'
     }
     return request(server)
       .post('/')
-      .send(registerMutation)
+      .send(mutationRegister)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
@@ -83,13 +78,13 @@ describe('A user', function () {
   })
 
   it('should not register a invalid password', () => {
-    registerMutation.variables = {
+    mutationRegister.variables = {
       email: 'valid@email.com',
       password: 'd'
     }
     return request(server)
       .post('/')
-      .send(registerMutation)
+      .send(mutationRegister)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
