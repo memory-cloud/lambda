@@ -7,6 +7,11 @@ const database = require('../../src/database')
 
 describe('A user', function () {
   var server
+  var registerMutation = {
+    query: `mutation ($email: String!, $password: String!){
+              register(email: $email password: $password)
+            }`
+  }
 
   beforeAll(async () => {
     server = await app.listen()
@@ -16,18 +21,14 @@ describe('A user', function () {
   beforeEach(async () => {
     await database.sync(true)
 
-    let postData = {
-      query: `mutation register($email: String!, $password: String!){
-                    register(email: $email password: $password)
-                }`,
-      variables: {
-        email: 'existent@user.com',
-        password: 'ssssss'
-      }
+    registerMutation.variables = {
+      email: 'existent@user.com',
+      password: 'ssssss'
     }
+
     return request(server)
       .post('/')
-      .send(postData)
+      .send(registerMutation)
   })
 
   afterAll(async () => {
@@ -37,18 +38,13 @@ describe('A user', function () {
   })
 
   it('should register a new user', () => {
-    let postData = {
-      query: `mutation register($email: String!, $password: String!){
-                  register(email: $email password: $password)
-              }`,
-      variables: {
-        email: 'new@user.com',
-        password: 'validpassword'
-      }
+    registerMutation.variables = {
+      email: 'new@user.com',
+      password: 'validpassword'
     }
     return request(server)
       .post('/')
-      .send(postData)
+      .send(registerMutation)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
@@ -57,22 +53,13 @@ describe('A user', function () {
   })
 
   it('should not register a existent user', () => {
-    let postData = {
-      query: `mutation register($email: String!, $password: String!){
-                  register(email: $email password: $password)
-              }`,
-      variables: {
-        email: 'existent@user.com',
-        password: 'asdasd'
-      }
+    registerMutation.variables = {
+      email: 'existent@user.com',
+      password: 'asdasd'
     }
-    request(server)
-      .post('/')
-      .send(postData)
-      .expect(200)
     return request(server)
       .post('/')
-      .send(postData)
+      .send(registerMutation)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
@@ -81,18 +68,13 @@ describe('A user', function () {
   })
 
   it('should not register a invalid email', () => {
-    let postData = {
-      query: `mutation register($email: String!, $password: String!){
-                  register(email: $email password: $password)
-              }`,
-      variables: {
-        email: 'invalidemail.com',
-        password: 'dddddd'
-      }
+    registerMutation.variables = {
+      email: 'invalidemail.com',
+      password: 'dddddd'
     }
     return request(server)
       .post('/')
-      .send(postData)
+      .send(registerMutation)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
@@ -101,18 +83,13 @@ describe('A user', function () {
   })
 
   it('should not register a invalid password', () => {
-    let postData = {
-      query: `mutation register($email: String!, $password: String!){
-                  register(email: $email password: $password)
-              }`,
-      variables: {
-        email: 'valid@email.com',
-        password: 'd'
-      }
+    registerMutation.variables = {
+      email: 'valid@email.com',
+      password: 'd'
     }
     return request(server)
       .post('/')
-      .send(postData)
+      .send(registerMutation)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
