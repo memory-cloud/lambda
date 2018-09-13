@@ -13,7 +13,10 @@ module.exports = (sequelize) => {
     appid: {
       type: Sequelize.BIGINT,
       unique: true,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: /^[0-9]+$/i
+      }
     },
     secret: {
       type: Sequelize.STRING,

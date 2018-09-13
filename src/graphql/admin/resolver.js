@@ -30,7 +30,7 @@ exports.resolver = {
   },
   Mutation: {
     async createGame (_, { game }, context) {
-      return new GameRepository(context.db).createGame(game, context.admin)
+      return new GameRepository(context.db).createGame(context.admin, game)
     },
     async createAchievement (_, { achievement }, context) {
       return new AchievementRepository(context.db).createAchievement(context.admin, achievement)
