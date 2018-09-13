@@ -59,6 +59,9 @@ describe('A logged in admin', function () {
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
         expect(res.body.data.createGame.id).toEqual(2)
+        expect(res.body.data.createGame.appid).toEqual(1234234234)
+        expect(res.body.data.createGame.name).toEqual('test')
+        expect(res.body.data.createGame.secret).toEqual('asdasdasd')
       })
   })
 

@@ -22,6 +22,9 @@ module.exports = {
                 secret: $secret
               }) {
                 id
+                appid
+                name
+                secret
               }
             }`
   }
