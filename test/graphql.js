@@ -27,5 +27,42 @@ module.exports = {
                 secret
               }
             }`
+  },
+  queryMe: {
+    query: `query {
+              me {
+                email
+              }
+            }`
+  },
+  queryGames: {
+    query: `query {
+              games {
+                id
+                name
+                appid
+                secret
+                achievements {
+                  id
+                  title
+                  description
+                }
+              }
+            }`
+  },
+  queryGame: {
+    query: `query ($id: Int!) {
+              game (id: $id) {
+                id
+                name
+                appid
+                secret
+                achievements {
+                  id
+                  title
+                  description
+                }
+              }
+            }`
   }
 }

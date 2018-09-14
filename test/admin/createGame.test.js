@@ -77,7 +77,7 @@ describe('A logged in admin', function () {
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
-        expect(res.body.errors).toBeDefined()
+        expect(res.body.errors).toHaveLength(1)
         expect(res.body.data.createGame).toBeNull()
       })
   })
@@ -94,7 +94,7 @@ describe('A logged in admin', function () {
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
-        expect(res.body.errors).toBeDefined()
+        expect(res.body.errors).toHaveLength(1)
         expect(res.body.data.createGame).toBeNull()
       })
   })
@@ -111,7 +111,7 @@ describe('A logged in admin', function () {
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
-        expect(res.body.errors).toBeDefined()
+        expect(res.body.errors).toHaveLength(1)
         expect(res.body.data.createGame).toBeNull()
       })
   })
@@ -128,7 +128,7 @@ describe('A logged in admin', function () {
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
-        expect(res.body.errors).toBeDefined()
+        expect(res.body.errors).toHaveLength(1)
         expect(res.body.data.createGame).toBeNull()
       })
   })
