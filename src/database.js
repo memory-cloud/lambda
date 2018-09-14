@@ -7,7 +7,7 @@ class Database {
     if (!Database.instance) {
       if (process.env.INIT === 'true') {
         this.createDatabase().then(() => {
-          return this.nome()
+          return this.setup()
         })
       } else {
         this.setup()
