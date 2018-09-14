@@ -47,6 +47,22 @@ describe('A user', function () {
       })
   })
 
+  it('should not register a new user when registration is closed', () => {
+    mutationRegister.variables = {
+      email: 'new@user.com',
+      password: 'validpassword'
+    }
+    process.env.OPEN = 'false'
+    return request(server)
+      .post('/')
+      .send(mutationRegister)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toBeDefined()
+        expect(res.body.data.register).toBeNull()
+      })
+  })
+
   it('should not register a existent user', () => {
     mutationRegister.variables = {
       email: 'existent@user.com',
