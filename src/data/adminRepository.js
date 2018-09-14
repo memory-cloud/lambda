@@ -20,7 +20,7 @@ class AdminRepository {
 
       let admin = await this.Admin.findOne({ where: { id: payload.id }, attributes: ['password', 'id'] })
 
-      if (!admin) return null
+      if (!admin) throw new Error('Admin not found')
 
       if (await jwt.verify(token, admin.password)) return admin
     } catch (err) {

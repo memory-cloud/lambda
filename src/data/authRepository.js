@@ -15,20 +15,21 @@ class AuthRepository {
     try {
       var admin = await this.Admin.findOne({ where: { email: email }, attributes: ['id', 'password'] })
 
-      if (!admin || !await admin.validPassword(password)) {
+      if (!admin) {
         throw new Error('Wrong credentials')
       }
+
+      await admin.validPassword(password)
+      return jwt.sign(getPayload(admin, 1), admin.password)
     } catch (err) {
       return err
     }
-    return jwt.sign(getPayload(admin, 1), admin.password)
   }
 
   async register (email, password) {
-    if (process.env.OPEN === 'false') {
-      return new Error('Registration is closed')
-    }
     try {
+      if (process.env.OPEN === 'false') throw new Error('Registration is closed')
+
       const admin = await this.Admin.create({ email: email, password: password })
 
       return jwt.sign(getPayload(admin, 1), admin.password)
@@ -39,12 +40,15 @@ class AuthRepository {
   }
 
   async changePassword (admin, oldPassword, newPassword) {
-    if (!await admin.validPassword(oldPassword)) {
-      return false
+    try {
+      await admin.validPassword(oldPassword)
+      admin.password = newPassword
+      await admin.save()
+      return true
+    } catch (err) {
+      debug(err)
+      return err
     }
-    admin.password = newPassword
-    await admin.save()
-    return true
   }
 }
 
