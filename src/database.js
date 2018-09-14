@@ -6,36 +6,42 @@ class Database {
   constructor () {
     if (!Database.instance) {
       if (process.env.INIT === 'true') {
-        this.createDatabase()
-      }
-
-      this.sequelize = new Sequelize({
-        host: config.host,
-        database: config.database,
-        username: config.username,
-        password: config.password,
-        dialect: config.dialect,
-        operatorsAliases: Sequelize.Op,
-        pool: {
-          max: 1
-        },
-        logging: process.env.DEBUG ? require('debug')('sequelize:logging') : false
-      })
-
-      require('./model/admin')(this.sequelize)
-      require('./model/game')(this.sequelize)
-      require('./model/achievement')(this.sequelize)
-      require('./model/player')(this.sequelize)
-      require('./model/integer')(this.sequelize)
-      require('./model/float')(this.sequelize)
-      require('./model/boolean')(this.sequelize)
-      require('./model/string')(this.sequelize)
-
-      if (process.env.INIT === 'true') {
-        this.sync(process.env.FORCE_SYNC === 'true')
+        this.createDatabase().then(() => {
+          return this.nome()
+        })
+      } else {
+        this.setup()
       }
     }
     return Database.instance
+  }
+
+  async setup () {
+    this.sequelize = new Sequelize({
+      host: config.host,
+      database: config.database,
+      username: config.username,
+      password: config.password,
+      dialect: config.dialect,
+      operatorsAliases: Sequelize.Op,
+      pool: {
+        max: 1
+      },
+      logging: process.env.DEBUG ? require('debug')('sequelize:logging') : false
+    })
+
+    require('./model/admin')(this.sequelize)
+    require('./model/game')(this.sequelize)
+    require('./model/achievement')(this.sequelize)
+    require('./model/player')(this.sequelize)
+    require('./model/integer')(this.sequelize)
+    require('./model/float')(this.sequelize)
+    require('./model/boolean')(this.sequelize)
+    require('./model/string')(this.sequelize)
+
+    if (process.env.INIT === 'true') {
+      this.sync(process.env.FORCE_SYNC === 'true')
+    }
   }
 
   async sync (force) {
