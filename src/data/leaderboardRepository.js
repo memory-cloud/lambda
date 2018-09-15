@@ -1,15 +1,8 @@
 const debug = require('debug')('repository:leaderboard')
 const { FB } = require('fb')
+const Repository = require('./repository')
 
-class LeaderboardsRepository {
-  constructor (db) {
-    if (!LeaderboardsRepository.instance) {
-      this.db = db
-      LeaderboardsRepository.instance = this
-    }
-    return LeaderboardsRepository.instance
-  }
-
+class LeaderboardsRepository extends Repository {
   async getInt (gameId, key, pageSize, page) {
     const { limit, offset } = check(pageSize, page)
     try {

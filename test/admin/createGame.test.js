@@ -1,9 +1,6 @@
-process.env.DEBUG = 'test:createGame'
-
-const debug = require('debug')('test:createGame')
 const request = require('supertest')
 const app = require('../../src/app')
-const database = require('../../src/database')
+const database = require('../../src/database/database')
 const { mutationRegister, mutationCreateGame } = require('../graphql')
 
 describe('A logged in admin', function () {
@@ -42,7 +39,7 @@ describe('A logged in admin', function () {
   afterAll(async () => {
     await server.close()
     await database.dropDatabase()
-    await database.close()
+    return database.close()
   })
 
   it('should create a valid game', () => {
@@ -59,9 +56,9 @@ describe('A logged in admin', function () {
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
         expect(res.body.data.createGame.id).toEqual(2)
-        expect(res.body.data.createGame.appid).toEqual(1234234234)
-        expect(res.body.data.createGame.name).toEqual('test')
-        expect(res.body.data.createGame.secret).toEqual('asdasdasd')
+        expect(res.body.data.createGame.appid).toEqual(mutationCreateGame.variables.appid)
+        expect(res.body.data.createGame.name).toEqual(mutationCreateGame.variables.name)
+        expect(res.body.data.createGame.secret).toEqual(mutationCreateGame.variables.secret)
       })
   })
 

@@ -1,10 +1,13 @@
-process.env.DEBUG = 'test:admin'
-
-const debug = require('debug')('test:admin')
 const request = require('supertest')
 const app = require('../../src/app')
-const database = require('../../src/database')
-const { mutationRegister, mutationCreateGame, queryMe, queryGames, queryGame } = require('../graphql')
+const database = require('../../src/database/database')
+const {
+  mutationRegister,
+  mutationCreateGame,
+  queryMe,
+  queryGames,
+  queryGame
+} = require('../graphql')
 
 describe('A logged in admin', function () {
   var server
@@ -57,6 +60,14 @@ describe('A logged in admin', function () {
       })
   })
 
+  it('should get error with invalid token', () => {
+    return request(server)
+      .post('/')
+      .set('admin', token + 'asd')
+      .send(queryMe)
+      .expect(404)
+  })
+
   it('should get all games information', () => {
     return request(server)
       .post('/')
@@ -70,6 +81,7 @@ describe('A logged in admin', function () {
         expect(res.body.data.games[0].name).toEqual('Valid Game')
         expect(res.body.data.games[0].appid).toEqual(12345)
         expect(res.body.data.games[0].secret).toEqual('valid-secret')
+        expect(res.body.data.games[0].players).toEqual(0)
       })
   })
 
@@ -88,6 +100,22 @@ describe('A logged in admin', function () {
         expect(res.body.data.game.name).toEqual('Valid Game')
         expect(res.body.data.game.appid).toEqual(12345)
         expect(res.body.data.game.secret).toEqual('valid-secret')
+        expect(res.body.data.game.players).toEqual(0)
+      })
+  })
+
+  it('should get an error when not own game', () => {
+    queryGame.variables = {
+      id: 5
+    }
+    return request(server)
+      .post('/')
+      .set('admin', token)
+      .send(queryGame)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toHaveLength(1)
+        expect(res.body.data.game).toBeNull()
       })
   })
 })

@@ -1,24 +1,16 @@
 const debug = require('debug')('repository:admin')
 const jwt = require('jsonwebtoken')
 const jwtdecode = require('jwt-decode')
+const Repository = require('./repository')
 
-class AdminRepository {
-  constructor (db) {
-    if (!AdminRepository.instance) {
-      this.db = db
-      this.Admin = db.import('Admin', require('../model/admin'))
-      AdminRepository.instance = this
-    }
-    return AdminRepository.instance
-  }
-
+class AdminRepository extends Repository {
   async findByToken (token) {
     try {
       const payload = jwtdecode(token)
 
       if (payload.exp < Date.now()) throw new Error('Token expired')
 
-      let admin = await this.Admin.findOne({ where: { id: payload.id }, attributes: ['password', 'id'] })
+      let admin = await this.db.Admin.findOne({ where: { id: payload.id }, attributes: ['password', 'id'] })
 
       if (!admin) throw new Error('Admin not found')
 
@@ -30,7 +22,7 @@ class AdminRepository {
   }
 
   async me (admin) {
-    return this.Admin.findById(admin.id)
+    return this.db.Admin.findById(admin.id)
   }
 }
 

@@ -1,6 +1,4 @@
-// const debug = require('debug')('middleware:context')
-const database = require('../database')
-// const path = require('path')
+const database = require('../database/database')
 
 module.exports = (req, res, next) => {
   req.context = {}

@@ -1,7 +1,10 @@
+scalar URL
+
 type AchievementDone {
     title: String
     description: String
     createdAt: String
+    image: URL
 }
 
 type Query {

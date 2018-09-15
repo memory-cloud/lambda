@@ -17,6 +17,7 @@ type Achievement {
     id: Int
     title: String
     description: String
+    image: URL
 }
 
 input GameInput {
@@ -26,20 +27,29 @@ input GameInput {
 }
 
 input AchievementInput {
-    id: Int
     title: String!
     description: String!
     gameId: Int!
+    image: URL!
+}
+
+input UpdateAchievementInput {
+    id: Int!
+    title: String
+    description: String
+    image: URL
 }
 
 type Query {
     me: Admin @isAdmin
     games: [Game] @isAdmin
     game(id: Int!): Game @isAdmin
+    readAchievement(id: Int!): Achievement @isAdmin
 }
 
 type Mutation {
     createGame(game: GameInput!): Game @isAdmin
     createAchievement(achievement: AchievementInput!): Achievement @isAdmin
-    updateAchievement(achievement: AchievementInput!): Achievement @isAdmin
+    updateAchievement(achievement: UpdateAchievementInput!): Achievement @isAdmin
+    deleteAchievement(id: Int!): Boolean @isAdmin
 }

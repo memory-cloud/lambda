@@ -9,13 +9,8 @@ exports.resolver = {
       return new AchievementRepository(context.db).findByGame(game)
     },
     async players (game, _, context) {
-      const players = await context.db.query(
-        'SELECT COUNT(*) FROM players WHERE gameId = :gameId',
-        { replacements: { gameId: game.id } }
-      )
-      return players[0][0]['COUNT(*)']
+      return new GameRepository(context.db).playersCount(game)
     }
-
   },
   Query: {
     me (_, args, context) {
@@ -26,6 +21,9 @@ exports.resolver = {
     },
     game (_, { id }, context) {
       return new GameRepository(context.db).game(context.admin, id)
+    },
+    async readAchievement (_, { id }, context) {
+      return new AchievementRepository(context.db).readAchievement(context.admin, id)
     }
   },
   Mutation: {
@@ -35,8 +33,12 @@ exports.resolver = {
     async createAchievement (_, { achievement }, context) {
       return new AchievementRepository(context.db).createAchievement(context.admin, achievement)
     },
-    async updateAchievement (_, { achievement, id }, context) {
-      context.db.Achievement.create()
+    async updateAchievement (_, { achievement }, context) {
+      return new AchievementRepository(context.db).updateAchievement(context.admin, achievement)
+    },
+    async deleteAchievement (_, { id }, context) {
+      return new AchievementRepository(context.db).deleteAchievement(context.admin, id)
     }
+
   }
 }

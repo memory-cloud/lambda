@@ -1,9 +1,6 @@
-process.env.DEBUG = 'test:register'
-
-// const debug = require('debug')('test:register')
 const request = require('supertest')
 const app = require('../../src/app')
-const database = require('../../src/database')
+const database = require('../../src/database/database')
 const { mutationRegister } = require('../graphql')
 describe('A user', function () {
   var server
@@ -29,7 +26,7 @@ describe('A user', function () {
   afterAll(async () => {
     await server.close()
     await database.dropDatabase()
-    await database.close()
+    return database.close()
   })
 
   it('should register a new user', () => {

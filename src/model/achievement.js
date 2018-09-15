@@ -25,6 +25,14 @@ module.exports = (sequelize) => {
       },
       unique: 'compositeIndex',
       allowNull: false
+    },
+    image: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        is: /^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|png)+$/i
+      }
     }
   })
   return Achievement

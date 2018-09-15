@@ -1,19 +1,11 @@
 const debug = require('debug')('repository:auth')
 const jwt = require('jsonwebtoken')
+const Repository = require('./repository')
 
-class AuthRepository {
-  constructor (db) {
-    if (!AuthRepository.instance) {
-      this.db = db
-      this.Admin = db.import('Admin', require('../model/admin'))
-      AuthRepository.instance = this
-    }
-    return AuthRepository.instance
-  }
-
+class AuthRepository extends Repository {
   async login (email, password) {
     try {
-      var admin = await this.Admin.findOne({ where: { email: email }, attributes: ['id', 'password'] })
+      var admin = await this.db.Admin.findOne({ where: { email: email }, attributes: ['id', 'password'] })
 
       if (!admin) {
         throw new Error('Wrong credentials')
@@ -30,7 +22,7 @@ class AuthRepository {
     try {
       if (process.env.OPEN === 'false') throw new Error('Registration is closed')
 
-      const admin = await this.Admin.create({ email: email, password: password })
+      const admin = await this.db.Admin.create({ email: email, password: password })
 
       return jwt.sign(getPayload(admin, 1), admin.password)
     } catch (err) {
