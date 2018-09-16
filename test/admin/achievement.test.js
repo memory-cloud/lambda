@@ -138,6 +138,24 @@ describe('A logged in admin', function () {
       })
   })
 
+  it('should not update an invalid achievement', () => {
+    mutationUpdateAchievement.variables = {
+      id: 5,
+      title: 'title updated',
+      description: 'description updated',
+      image: 'https://www.example.com/img-updated.png'
+    }
+    return request(server)
+      .post('/')
+      .set('admin', token)
+      .send(mutationUpdateAchievement)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toHaveLength(1)
+        expect(res.body.data.updateAchievement).toBeNull()
+      })
+  })
+
   it('should delete a valid achievement', () => {
     mutationDeleteAchievement.variables = {
       id: 1
@@ -150,6 +168,21 @@ describe('A logged in admin', function () {
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
         expect(res.body.data.deleteAchievement).toBe(true)
+      })
+  })
+
+  it('should not delete an invalid achievement', () => {
+    mutationDeleteAchievement.variables = {
+      id: 5
+    }
+    return request(server)
+      .post('/')
+      .set('admin', token)
+      .send(mutationDeleteAchievement)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toHaveLength(1)
+        expect(res.body.data.deleteAchievement).toBeNull()
       })
   })
 })

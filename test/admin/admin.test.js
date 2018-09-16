@@ -1,3 +1,5 @@
+process.env.DEBUG = 'test, resolver:admin,'
+const debug = require('debug')('test')
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
@@ -65,7 +67,10 @@ describe('A logged in admin', function () {
       .post('/')
       .set('admin', token + 'asd')
       .send(queryMe)
-      .expect(404)
+      .expect(401)
+      .expect(res => {
+        debug(res.body)
+      })
   })
 
   it('should get all games information', () => {
@@ -115,6 +120,8 @@ describe('A logged in admin', function () {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
+        expect(res.body.errors[0].path).toBe('game')
+        expect(res.body.errors[0].message).toBe('Game not found')
         expect(res.body.data.game).toBeNull()
       })
   })

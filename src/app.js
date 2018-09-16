@@ -14,9 +14,15 @@ app.use(
   '/',
   expressGraphQL((req) => {
     return {
-      graphiql: true,
+      graphiql: process.env.NODE_ENV === 'development',
       context: req.context,
-      schema: GraphQLSchema
+      schema: GraphQLSchema,
+      formatError (err) {
+        return {
+          path: err.path[0],
+          message: err.message
+        }
+      }
     }
   })
 )

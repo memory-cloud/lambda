@@ -1,4 +1,4 @@
-const debug = require('debug')('repository:game')
+// const debug = require('debug')('repository:game')
 const Repository = require('./repository')
 
 class GameRepository extends Repository {
@@ -8,21 +8,15 @@ class GameRepository extends Repository {
 
   async game (admin, id) {
     let game = await this.db.Game.findOne({ where: { adminId: admin.id, id: id } })
-    if (!game) {
-      throw new Error('Game not found')
-    }
+
+    if (!game) throw new Error('Game not found')
+
     return game
   }
 
   async createGame (admin, game) {
     game.adminId = admin.id
-    try {
-      game = await this.db.Game.create(game)
-    } catch (err) {
-      debug(err)
-      return err
-    }
-    return game
+    return this.db.Game.create(game)
   }
 
   async findByAppId (appid) {

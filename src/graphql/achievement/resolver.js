@@ -1,4 +1,4 @@
-// const debug = require('debug')('achievement-resolver')
+// const debug = require('debug')('resolver:achievement')
 const AchievementRepository = require('../../data/achievementRepository')
 
 exports.resolver = {

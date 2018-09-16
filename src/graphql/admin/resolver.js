@@ -1,4 +1,4 @@
-// const debug = require('debug')('admin-resolver')
+// const debug = require('debug')('resolver:admin')
 const AdminRepository = require('../../data/adminRepository')
 const GameRepository = require('../../data/gameRepository')
 const AchievementRepository = require('../../data/achievementRepository')

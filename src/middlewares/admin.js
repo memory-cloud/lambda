@@ -14,6 +14,6 @@ module.exports = async (req, res, next) => {
     next()
   } catch (err) {
     debug(err)
-    return res.status(500).send(err)
+    return res.status(401).send(err)
   }
 }

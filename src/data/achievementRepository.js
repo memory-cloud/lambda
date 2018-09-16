@@ -1,22 +1,17 @@
-const debug = require('debug')('repository:achievement')
 const Repository = require('./repository')
+const GameRepository = require('./gameRepository')
 
 class AchievementRepository extends Repository {
   async completeAchievement (player, title) {
-    try {
-      const achievement = await this.db.Achievement.findOne({ where: { title: title, gameId: player.gameId }, attributes: ['id'] })
+    const achievement = await this.db.Achievement.findOne({ where: { title: title, gameId: player.gameId }, attributes: ['id'] })
 
-      if (!achievement) throw new Error('Achievement not found')
+    if (!achievement) throw new Error('Achievement not found')
 
-      await player.getAchievements().map(achiev => {
-        if (achiev.id === achievement.id) throw new Error('Achievement already done')
-      })
-      player.addAchievement(achievement)
-      return true
-    } catch (err) {
-      debug(err)
-      return err
-    }
+    await player.getAchievements().map(achiev => {
+      if (achiev.id === achievement.id) throw new Error('Achievement already done')
+    })
+    player.addAchievement(achievement)
+    return true
   }
 
   async completedAchievementsByPlayer (player) {
@@ -26,60 +21,37 @@ class AchievementRepository extends Repository {
   }
 
   async createAchievement (admin, achievement) {
-    try {
-      const game = await this.db.Game.findOne({ where: { id: achievement.gameId, adminId: admin.id } })
+    const game = await new GameRepository(this.db).game(admin, achievement.gameId)
 
-      if (!game) throw new Error('Game not found')
+    achievement.gameId = game.id
 
-      achievement.gameId = game.id
-      return this.db.Achievement.create(achievement)
-    } catch (err) {
-      debug(err)
-      return err
-    }
+    return this.db.Achievement.create(achievement)
   }
 
   async updateAchievement (admin, achievement) {
-    try {
-      await this.readAchievement(admin, achievement.id)
+    await this.readAchievement(admin, achievement.id)
 
-      await this.db.Achievement.update(achievement, { where: { id: achievement.id } })
+    await this.db.Achievement.update(achievement, { where: { id: achievement.id } })
 
-      return achievement
-    } catch (err) {
-      debug(err)
-      return err
-    }
+    return achievement
   }
 
   async readAchievement (admin, id) {
-    try {
-      const achievement = await this.db.Achievement.findOne({ where: { id: id } })
+    const achievement = await this.db.Achievement.findOne({ where: { id: id } })
 
-      if (!achievement) throw new Error('Achievement not found')
+    if (!achievement) throw new Error('Achievement not found')
 
-      const game = await this.db.Game.findOne({ where: { id: achievement.gameId, adminId: admin.id } })
+    await new GameRepository(this.db).game(admin, achievement.gameId)
 
-      if (!game) throw new Error('Game not found')
-
-      return achievement
-    } catch (err) {
-      debug(err)
-      return err
-    }
+    return achievement
   }
 
   async deleteAchievement (admin, id) {
-    try {
-      const achievement = await this.readAchievement(admin, id)
+    const achievement = await this.readAchievement(admin, id)
 
-      await this.db.Achievement.destroy({ where: { id: achievement.id } })
+    await this.db.Achievement.destroy({ where: { id: achievement.id } })
 
-      return true
-    } catch (err) {
-      debug(err)
-      return err
-    }
+    return true
   }
 
   async findByGame (game) {
