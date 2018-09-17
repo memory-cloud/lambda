@@ -12,17 +12,15 @@ const {
   queryLoadState
 } = require('../graphql')
 
-describe('A logged in admin', () => {
+describe('A player', () => {
   var server
   var adminToken
-  var player1
-  var player2
+  var playerToken
 
   beforeAll(async () => {
     server = await app.listen()
     const playersToken = await getTestTokens()
-    player1 = playersToken.data[0].access_token
-    player2 = playersToken.data[1].access_token
+    playerToken = playersToken.data[0].access_token
     return database.createDatabase()
   })
 
@@ -86,7 +84,7 @@ describe('A logged in admin', () => {
 
     await request(server)
       .post('/')
-      .set('player', player1)
+      .set('player', playerToken)
       .set('appid', process.env.TEST_APPID)
       .send(mutationSaveState)
       .expect(200)
@@ -97,7 +95,7 @@ describe('A logged in admin', () => {
 
     return request(server)
       .post('/')
-      .set('player', player1)
+      .set('player', playerToken)
       .set('appid', process.env.TEST_APPID)
       .send(queryLoadState)
       .expect(200)

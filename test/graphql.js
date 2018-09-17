@@ -144,5 +144,37 @@ module.exports = {
                 }
               }   
             }`
+  },
+  queryLeaderboard: {
+    query: `query ($key: String!){
+              Leaderboard(key: $key){
+                id
+                score
+              }
+            }`
+  },
+  queryLeaderboardFriends: {
+    query: `query ($key: String!){
+              LeaderboardFriends(key: $key){
+                id
+                score
+              }
+            }`
+  },
+  queryLeaderboardFloat: {
+    query: `query ($key: String!){
+              LeaderboardFloat(key: $key){
+                id
+                score
+              }
+            }`
+  },
+  queryLeaderboardFloatFriends: {
+    query: `query ($key: String!){
+              LeaderboardFloatFriends(key: $key){
+                id
+                score
+              }
+            }`
   }
 }
