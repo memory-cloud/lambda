@@ -11,3 +11,37 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=backend-memorycloud&metric=bugs)](https://sonarcloud.io/dashboard?id=backend-memorycloud)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=backend-memorycloud&metric=sqale_index)](https://sonarcloud.io/dashboard?id=backend-memorycloud)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=backend-memorycloud&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=backend-memorycloud)
+
+
+# Memory Cloud
+
+## Running the app
+
+Rename .env.example to .env
+
+Set mysql settings in .env
+
+```
+npm install
+
+npm run dev
+```
+
+## Running tests
+
+Go to Facebook Developers and create 2 users for the test App
+
+### Locally
+Rename .env.test.example to .env.test
+
+Set Facebook Test App id and secret in .env.test
+
+Set testing mysql settings in /src/database/config.js
+
+```
+npm run local-test
+```
+
+### Travis
+
+Create environment variables TEST_APPID and TEST_APPSECRET
