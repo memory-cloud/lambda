@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize')
-// const debug = require('debug')('game-model')
 
 module.exports = (sequelize) => {
   const Integer = sequelize.define('integer', {

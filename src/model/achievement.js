@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize')
-// const debug = require('debug')('game-model')
 
 module.exports = (sequelize) => {
   const Achievement = sequelize.define('achievement', {
@@ -34,6 +33,10 @@ module.exports = (sequelize) => {
         is: /^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|png)+$/i
       }
     }
+  }, {
+    indexes: [{
+      fields: ['id', 'title', 'gameId']
+    }]
   })
   return Achievement
 }
