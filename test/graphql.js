@@ -111,5 +111,38 @@ module.exports = {
     query: `mutation ($id: Int!) {
               deleteAchievement(id: $id)
             }`
+  },
+  mutationSaveState: {
+    query: `mutation ($integers: [IntegerDictInput], $floats: [FloatDictInput], $booleans: [BooleanDictInput], $strings: [StringDictInput]) {
+              Save (
+                integers: $integers
+                floats: $floats
+                booleans: $booleans
+                strings: $strings
+              )
+            }
+    `
+  },
+  queryLoadState: {
+    query: `query {
+              Load {
+                integers {
+                  key
+                  value
+                }
+                floats {
+                  key
+                  value
+                }
+                booleans {
+                  key
+                  value
+                }
+                strings {
+                  key
+                  value
+                }
+              }   
+            }`
   }
 }

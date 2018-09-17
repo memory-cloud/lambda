@@ -1,4 +1,4 @@
-const debug = require('debug')('admin-middleware')
+const debug = require('debug')('middleware:admin')
 const AdminRepository = require('../data/adminRepository')
 
 module.exports = async (req, res, next) => {

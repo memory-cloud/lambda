@@ -33,6 +33,10 @@ module.exports = (sequelize) => {
     }]
   })
 
+  Game.prototype.getToken = function () {
+    return this.appid + '|' + this.secret
+  }
+
   Game.belongsTo(sequelize.import('./admin'), { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
 
   return Game

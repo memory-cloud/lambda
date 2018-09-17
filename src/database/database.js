@@ -5,17 +5,13 @@ const Model = require('../model')
 
 class Database {
   constructor () {
-    if (!Database.instance) {
-      this.setup().then(() => {
-        switch (process.env.NODE_ENV) {
-          case 'development':
-            return this.createDatabase().then(() => this.sync(false))
-          case 'production':
-            return this.sync(false)
-        }
-      })
-    }
-    return Database.instance
+    this.setup().then(() => {
+      switch (process.env.NODE_ENV) {
+        case 'development':
+        case 'production':
+          return this.createDatabase().then(() => this.sync(false))
+      }
+    })
   }
 
   async setup () {
@@ -32,15 +28,6 @@ class Database {
       },
       logging: process.env.DEBUG ? require('debug')('sequelize:logging') : false
     })
-
-    require('../model/admin')(this.sequelize)
-    require('../model/game')(this.sequelize)
-    require('../model/achievement')(this.sequelize)
-    require('../model/player')(this.sequelize)
-    require('../model/integer')(this.sequelize)
-    require('../model/float')(this.sequelize)
-    require('../model/boolean')(this.sequelize)
-    require('../model/string')(this.sequelize)
 
     this.sequelize.Admin = Model.get('Admin', this.sequelize)
     this.sequelize.Achievement = Model.get('Achievement', this.sequelize)

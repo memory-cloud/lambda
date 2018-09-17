@@ -11,7 +11,7 @@ const {
   queryGame
 } = require('../graphql')
 
-describe('A logged in admin', function () {
+describe('A logged in admin', () => {
   var server
   var token
 
@@ -68,9 +68,6 @@ describe('A logged in admin', function () {
       .set('admin', token + 'asd')
       .send(queryMe)
       .expect(401)
-      .expect(res => {
-        debug(res.body)
-      })
   })
 
   it('should get all games information', () => {

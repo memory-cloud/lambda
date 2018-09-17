@@ -10,7 +10,7 @@ const {
   mutationDeleteAchievement
 } = require('../graphql')
 
-describe('A logged in admin', function () {
+describe('A logged in admin', () => {
   var server
   var token
 

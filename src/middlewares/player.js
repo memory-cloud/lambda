@@ -1,4 +1,4 @@
-const debug = require('debug')('player-middleware')
+const debug = require('debug')('middleware:player')
 const { FB } = require('fb')
 const GameRepository = require('../data/gameRepository')
 const PlayerRepository = require('../data/playerRepository')
@@ -17,7 +17,9 @@ module.exports = async (req, res, next) => {
 
     if (!game) return res.status(404).send('Game not found')
 
-    const response = await FB.api('/debug_token?input_token=' + token + '&access_token=' + appid + '|' + game.secret)
+    FB.setAccessToken(game.getToken())
+
+    const response = await FB.api('/debug_token?input_token=' + token)
 
     if (response.data.error) return res.status(401).send(response.data.error.message)
 

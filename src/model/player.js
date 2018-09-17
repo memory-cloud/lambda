@@ -21,6 +21,19 @@ module.exports = (sequelize) => {
       fields: ['id', 'fbid', 'gameId']
     }] }
   )
-  Player.belongsToMany(sequelize.import('./achievement'), { through: sequelize.define('achievements_player', {}) })
+  Player.belongsToMany(sequelize.import('./achievement'), {
+    through: sequelize.define('player_has_achievements', {
+      createdAt: {
+        type: 'TIMESTAMP',
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
+      },
+      updatedAt: {
+        type: 'TIMESTAMP',
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
+      }
+    })
+  })
   return Player
 }

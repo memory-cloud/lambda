@@ -7,17 +7,23 @@ class AchievementRepository extends Repository {
 
     if (!achievement) throw new Error('Achievement not found')
 
-    await player.getAchievements().map(achiev => {
-      if (achiev.id === achievement.id) throw new Error('Achievement already done')
-    })
-    player.addAchievement(achievement)
+    await this.db.query(
+      'INSERT INTO player_has_achievements (achievementId, playerId) ' +
+      'VALUES (:achievementId, :playerId)',
+      { replacements: { achievementId: achievement.id, playerId: player.id } })
+
     return true
   }
 
   async completedAchievementsByPlayer (player) {
-    return player.getAchievements({ order: [
-      ['createdAt', 'DESC']
-    ] })
+    const achievements = await this.db.query(
+      'SELECT achievements.image, achievements.title, achievements.description, player_has_achievements.createdAt AS completedAt ' +
+      'FROM player_has_achievements ' +
+      'JOIN achievements ON achievements.id = player_has_achievements.achievementId ' +
+      'WHERE player_has_achievements.playerId = :playerId ' +
+      'ORDER BY completedAt DESC',
+      { replacements: { playerId: player.id } })
+    return achievements[0]
   }
 
   async createAchievement (admin, achievement) {
@@ -55,12 +61,7 @@ class AchievementRepository extends Repository {
   }
 
   async findByGame (game) {
-    const achievements = await this.db.query(
-      'SELECT * FROM achievements ' +
-      'WHERE achievements.gameId = :gameId',
-      { replacements: { gameId: game.id } }
-    )
-    return achievements[0]
+    return this.db.Achievement.findAll({ where: { gameId: game.id } })
   }
 }
 

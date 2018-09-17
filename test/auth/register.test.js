@@ -2,7 +2,8 @@ const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
 const { mutationRegister } = require('../graphql')
-describe('A user', function () {
+
+describe('A user', () => {
   var server
 
   beforeAll(async () => {
