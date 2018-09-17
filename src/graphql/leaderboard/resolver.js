@@ -8,7 +8,7 @@ exports.resolver = {
       return new LeaderboardRepository(context.db).getInt(context.player.gameId, key, top, page)
     },
     async LeaderboardFloat (root, { top, key, page }, context) {
-      return new LeaderboardRepository(context.db).getFloat(context.player, key, top, page)
+      return new LeaderboardRepository(context.db).getFloat(context.player.gameId, key, top, page)
     },
     async LeaderboardFriends (root, { top, key, page }, context) {
       return new LeaderboardRepository(context.db).getIntFriends(context.player, key, top, page)
