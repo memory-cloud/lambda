@@ -188,6 +188,7 @@ module.exports = {
               Achievements {
                 title
                 description
+                image
                 completedAt
               }
             }`

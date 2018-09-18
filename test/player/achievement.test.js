@@ -52,7 +52,7 @@ describe('A player', () => {
       gameId: 1,
       title: 'title',
       description: 'description',
-      image: 'https://www.example.com/img.png'
+      image: 'https://www.example.com/img2.png'
     }
     await request(server)
       .post('/')
@@ -101,8 +101,9 @@ describe('A player', () => {
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
         expect(res.body.data.Achievements).toHaveLength(1)
-        expect(res.body.data.Achievements[0].title).toBe(mutationCreateAchievement.variables.title)
-        expect(res.body.data.Achievements[0].description).toBe(mutationCreateAchievement.variables.description)
+        expect(res.body.data.Achievements[0].title).toBe('title')
+        expect(res.body.data.Achievements[0].description).toBe('description')
+        expect(res.body.data.Achievements[0].image).toBe('https://www.example.com/img.png')
       })
   })
 
