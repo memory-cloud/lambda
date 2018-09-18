@@ -115,6 +115,15 @@ describe('A player', () => {
         expect(res.body.data.Load.booleans[0].value).toBe(mutationSaveState.variables.booleans[0].value)
       })
   })
+
+  it('should return error when no game is found', () => {
+    return request(server)
+      .post('/')
+      .set('player', playerToken)
+      .set('appid', 234234234234)
+      .send(queryLoadState)
+      .expect(401)
+  })
 })
 
 const getTestTokens = async () => {
