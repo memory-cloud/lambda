@@ -176,5 +176,20 @@ module.exports = {
                 score
               }
             }`
+  },
+  mutationCompleteAchievement: {
+    query: `mutation ($title: String!) {
+              CompleteAchievement(title: $title)
+            }
+    `
+  },
+  queryAchievements: {
+    query: `query {
+              Achievements {
+                title
+                description
+                completedAt
+              }
+            }`
   }
 }
