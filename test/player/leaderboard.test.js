@@ -93,7 +93,7 @@ describe('A player', () => {
       ]
     }
 
-    await request(server)
+    return request(server)
       .post('/')
       .set('player', player2Token)
       .set('appid', process.env.TEST_APPID)
