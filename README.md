@@ -29,14 +29,16 @@ npm run dev
 
 ## Running tests
 
-Go to Facebook Developers and create 2 users for the test App
+The tests need 2 test users from Facebook.
+
+Go to Facebook Developers > My App > Roles > Test Users to create them.
 
 ### Locally
 Rename .env.test.example to .env.test
 
 Set Facebook Test App id and secret in .env.test
 
-Set testing mysql settings in /src/database/config.js
+Set mysql and Facebook App settings and in .env.test
 
 ```
 npm run local-test

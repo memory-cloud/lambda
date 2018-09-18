@@ -1,7 +1,7 @@
 const { makeExecutableSchema } = require('graphql-tools')
 const glue = require('schemaglue')
 const debug = require('debug')('schema')
-const { schema, resolver } = glue('src/graphql', { ignore: '**.test.js' })
+const { schema, resolver } = glue('src/schema', { ignore: '**.test.js, index.js' })
 
 debug(schema)
 
