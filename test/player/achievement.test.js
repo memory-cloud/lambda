@@ -52,7 +52,7 @@ describe('A player', () => {
       gameId: 1,
       title: 'title',
       description: 'description',
-      image: 'https://www.example.com/img2.png'
+      image: 'https://www.example.com/img.png'
     }
     await request(server)
       .post('/')
@@ -63,7 +63,7 @@ describe('A player', () => {
       gameId: 1,
       title: 'title2',
       description: 'description2',
-      image: 'https://www.example.com/img.png'
+      image: 'https://www.example.com/img2.png'
     }
     return request(server)
       .post('/')
