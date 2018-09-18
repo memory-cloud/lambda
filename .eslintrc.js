@@ -1,20 +1,21 @@
 module.exports = {
-  "extends": "standard",
+  'extends': 'standard',
   env: {
-    es6: true
+    'node': true,
+    'es6': true
   },
   overrides: [{
-    files: ["**/*.test.js", "jest.setup.js"],
-    env: { 
+    files: ['**/*.test.js', 'jest.setup.js'],
+    env: {
       jest: true
     },
-    plugins: ["jest"],
+    plugins: ['jest'],
     rules: {
-      "jest/no-disabled-tests": "warn",
-      "jest/no-focused-tests": "error",
-      "jest/no-identical-title": "error",
-      "jest/prefer-to-have-length": "warn",
-      "jest/valid-expect": "error"
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-focused-tests': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/prefer-to-have-length': 'warn',
+      'jest/valid-expect': 'error'
     }
   }]
-};
+}

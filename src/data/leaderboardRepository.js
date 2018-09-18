@@ -1,78 +1,58 @@
-const debug = require('debug')('repository:leaderboard')
+// const debug = require('debug')('repository:leaderboard')
 const { FB } = require('fb')
 const Repository = require('./repository')
 
 class LeaderboardsRepository extends Repository {
   async getInt (gameId, key, pageSize, page) {
     const { limit, offset } = check(pageSize, page)
-    try {
-      const leaderboard = await this.db.query(
-        'SELECT players.fbid AS id, integers.value as score FROM players ' +
-        'INNER JOIN integers ON integers.playerId = players.id ' +
-        'WHERE players.gameId = :gameId ' +
-        'AND integers.key = :key ' +
-        'ORDER BY score DESC ' +
-        'LIMIT :offset, :limit',
-        { replacements: { gameId: gameId, key: key, limit: limit, offset: limit * offset } })
-      return leaderboard[0]
-    } catch (err) {
-      debug(err)
-      return []
-    }
+    const leaderboard = await this.db.query(
+      'SELECT players.fbid AS id, integers.value as score FROM players ' +
+      'INNER JOIN integers ON integers.playerId = players.id ' +
+      'WHERE players.gameId = :gameId ' +
+      'AND integers.key = :key ' +
+      'ORDER BY score DESC ' +
+      'LIMIT :offset, :limit',
+      { replacements: { gameId: gameId, key: key, limit: limit, offset: limit * offset } })
+    return leaderboard[0]
   }
 
   async getIntFriends (player, key, pageSize, page) {
     const { limit, offset } = check(pageSize, page)
-    try {
-      const leaderboard = await this.db.query(
-        'SELECT players.fbid AS id, integers.value as score FROM players ' +
-            'INNER JOIN integers ON integers.playerId = players.id ' +
-          'WHERE players.fbid IN (:playersIds) ' +
-            'AND integers.key = :key ' +
-          'ORDER BY score DESC ' +
-          'LIMIT :offset, :limit',
-        { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: limit * offset } })
-      return leaderboard[0]
-    } catch (err) {
-      debug(err)
-      return []
-    }
+    const leaderboard = await this.db.query(
+      'SELECT players.fbid AS id, integers.value as score FROM players ' +
+          'INNER JOIN integers ON integers.playerId = players.id ' +
+        'WHERE players.fbid IN (:playersIds) ' +
+          'AND integers.key = :key ' +
+        'ORDER BY score DESC ' +
+        'LIMIT :offset, :limit',
+      { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: limit * offset } })
+    return leaderboard[0]
   }
 
   async getFloat (gameId, key, pageSize, page) {
     const { limit, offset } = check(pageSize, page)
-    try {
-      const leaderboard = await this.db.query(
-        'SELECT players.fbid AS id, floats.value as score FROM players ' +
-        'INNER JOIN floats ON floats.playerId = players.id ' +
-        'WHERE players.gameId = :gameId ' +
-        'AND floats.key = :key ' +
-        'ORDER BY score DESC ' +
-        'LIMIT :offset, :limit',
-        { replacements: { gameId: gameId, key: key, limit: limit, offset: limit * offset } })
-      return leaderboard[0]
-    } catch (err) {
-      debug(err)
-      return []
-    }
+    const leaderboard = await this.db.query(
+      'SELECT players.fbid AS id, floats.value as score FROM players ' +
+      'INNER JOIN floats ON floats.playerId = players.id ' +
+      'WHERE players.gameId = :gameId ' +
+      'AND floats.key = :key ' +
+      'ORDER BY score DESC ' +
+      'LIMIT :offset, :limit',
+      { replacements: { gameId: gameId, key: key, limit: limit, offset: limit * offset } })
+    return leaderboard[0]
   }
 
   async getFloatFriends (player, key, pageSize, page) {
     const { limit, offset } = check(pageSize, page)
-    try {
-      const leaderboard = await this.db.query(
-        'SELECT players.fbid AS id, floats.value as score FROM players ' +
-            'INNER JOIN floats ON floats.playerId = players.id ' +
-          'WHERE players.fbid IN (:playersIds) ' +
-            'AND floats.key = :key ' +
-          'ORDER BY score DESC ' +
-          'LIMIT :offset, :limit',
-        { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: limit * offset } })
-      return leaderboard[0]
-    } catch (err) {
-      debug(err)
-      return []
-    }
+    const leaderboard = await this.db.query(
+      'SELECT players.fbid AS id, floats.value as score FROM players ' +
+          'INNER JOIN floats ON floats.playerId = players.id ' +
+        'WHERE players.fbid IN (:playersIds) ' +
+          'AND floats.key = :key ' +
+        'ORDER BY score DESC ' +
+        'LIMIT :offset, :limit',
+      { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: limit * offset } })
+    return leaderboard[0]
   }
 }
 

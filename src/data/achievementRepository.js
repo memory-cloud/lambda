@@ -15,14 +15,14 @@ class AchievementRepository extends Repository {
     return true
   }
 
-  async completedAchievementsByPlayer (player) {
+  async getAchievementsByPlayer (player) {
     const achievements = await this.db.query(
-      'SELECT achievements.image, achievements.title, achievements.description, player_has_achievements.createdAt AS completedAt ' +
-      'FROM player_has_achievements ' +
-      'JOIN achievements ON achievements.id = player_has_achievements.achievementId ' +
-      'WHERE player_has_achievements.playerId = :playerId ' +
+      'SELECT a.image, a.title, a.description, pa.createdAt AS completedAt ' +
+      'FROM achievements a ' +
+      'LEFT JOIN player_has_achievements pa ON (pa.achievementId = a.id AND pa.playerId = :playerId) ' +
+      'WHERE a.gameId = :gameId ' +
       'ORDER BY completedAt DESC',
-      { replacements: { playerId: player.id } })
+      { replacements: { playerId: player.id, gameId: player.gameId } })
     return achievements[0]
   }
 

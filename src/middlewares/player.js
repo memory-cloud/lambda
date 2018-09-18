@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
   try {
     const game = await new GameRepository(req.context.db).findByAppId(appid)
 
-    if (!game) return res.status(404).send('Game not found')
+    if (!game) throw new Error('Game not found')
 
     FB.setAccessToken(game.getToken())
 

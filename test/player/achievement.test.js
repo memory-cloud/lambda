@@ -100,10 +100,12 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.Achievements).toHaveLength(1)
+        expect(res.body.data.Achievements).toHaveLength(2)
         expect(res.body.data.Achievements[0].title).toBe('title')
         expect(res.body.data.Achievements[0].description).toBe('description')
         expect(res.body.data.Achievements[0].image).toBe('https://www.example.com/img.png')
+        expect(res.body.data.Achievements[0].completedAt).toBeDefined()
+        expect(res.body.data.Achievements[1].completedAt).toBeNull()
       })
   })
 

@@ -4,7 +4,7 @@ const AchievementRepository = require('../../data/achievementRepository')
 exports.resolver = {
   Query: {
     async Achievements (db, params, context) {
-      return new AchievementRepository(context.db).completedAchievementsByPlayer(context.player)
+      return new AchievementRepository(context.db).getAchievementsByPlayer(context.player)
     }
   },
   Mutation: {
