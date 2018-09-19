@@ -8,9 +8,9 @@ type AchievementDone {
 }
 
 type Query {
-    Achievements: [AchievementDone] @isPlayer
+    Achievements: [AchievementDone] @hasRole(requires: PLAYER)
 }
 
 type Mutation {
-    CompleteAchievement(title: String!): Boolean @isPlayer
+    CompleteAchievement(title: String!): Boolean @hasRole(requires: PLAYER)
 }

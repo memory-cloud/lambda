@@ -3,7 +3,7 @@ const app = require('../../src/app')
 const database = require('../../src/database/database')
 const { mutationRegister } = require('../graphql')
 
-describe('A user', () => {
+describe('An user', () => {
   var server
 
   beforeAll(async () => {

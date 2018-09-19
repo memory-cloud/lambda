@@ -3,7 +3,7 @@ const app = require('../../src/app')
 const database = require('../../src/database/database')
 const { mutationRegister, mutationChangePassword } = require('../graphql')
 
-describe('A logged in admin', () => {
+describe('An admin', () => {
   var server
   var token
 

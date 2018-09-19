@@ -1,16 +1,18 @@
 type ScoreInt {
-    id: BigInt
+    id: Int
+    fbid: BigInt
     score: BigInt
 }
 
 type ScoreFloat {
-    id: BigInt
+    id: Int
+    fbid: BigInt
     score: Float
 }
 
 type Query {
-    LeaderboardFriends(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @isPlayer
-    Leaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @isPlayer
-    LeaderboardFloat(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @isPlayer
-    LeaderboardFloatFriends(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @isPlayer
+    FriendsIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: FACEBOOK)
+    GlobalIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: PLAYER)
+    GlobalFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: FACEBOOK)
+    FriendsFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: PLAYER)
 }

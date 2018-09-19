@@ -9,10 +9,10 @@ const {
   mutationRegister,
   mutationCreateGame,
   mutationSaveState,
-  queryLeaderboard,
-  queryLeaderboardFriends,
-  queryLeaderboardFloat,
-  queryLeaderboardFloatFriends
+  queryGlobalIntLeaderboard,
+  queryFriendsIntLeaderboard,
+  queryGlobalFloatLeaderboard,
+  queryFriendsFloatLeaderboard
 } = require('../graphql')
 
 describe('A player', () => {
@@ -112,66 +112,66 @@ describe('A player', () => {
   })
 
   it('should get leaderboard', async () => {
-    queryLeaderboard.variables = {
+    queryGlobalIntLeaderboard.variables = {
       key: 'asd'
     }
     return request(server)
       .post('/')
       .set('player', player1Token)
       .set('appid', process.env.TEST_APPID)
-      .send(queryLeaderboard)
+      .send(queryGlobalIntLeaderboard)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.Leaderboard).toHaveLength(2)
+        expect(res.body.data.GlobalIntLeaderboard).toHaveLength(2)
       })
   })
 
   it('should get leaderboard friends', async () => {
-    queryLeaderboardFriends.variables = {
+    queryFriendsIntLeaderboard.variables = {
       key: 'asd'
     }
     return request(server)
       .post('/')
       .set('player', player1Token)
       .set('appid', process.env.TEST_APPID)
-      .send(queryLeaderboardFriends)
+      .send(queryFriendsIntLeaderboard)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.LeaderboardFriends).toHaveLength(2)
+        expect(res.body.data.FriendsIntLeaderboard).toHaveLength(2)
       })
   })
 
   it('should get float leaderboard', async () => {
-    queryLeaderboardFloat.variables = {
+    queryGlobalFloatLeaderboard.variables = {
       key: 'asd'
     }
     return request(server)
       .post('/')
       .set('player', player1Token)
       .set('appid', process.env.TEST_APPID)
-      .send(queryLeaderboardFloat)
+      .send(queryGlobalFloatLeaderboard)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.LeaderboardFloat).toHaveLength(2)
+        expect(res.body.data.GlobalFloatLeaderboard).toHaveLength(2)
       })
   })
 
   it('should get float leaderboard friends', async () => {
-    queryLeaderboardFloatFriends.variables = {
+    queryFriendsFloatLeaderboard.variables = {
       key: 'asd'
     }
     return request(server)
       .post('/')
       .set('player', player1Token)
       .set('appid', process.env.TEST_APPID)
-      .send(queryLeaderboardFloatFriends)
+      .send(queryFriendsFloatLeaderboard)
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.LeaderboardFloatFriends).toHaveLength(2)
+        expect(res.body.data.FriendsFloatLeaderboard).toHaveLength(2)
       })
   })
 })

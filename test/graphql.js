@@ -145,33 +145,33 @@ module.exports = {
               }   
             }`
   },
-  queryLeaderboard: {
+  queryGlobalIntLeaderboard: {
     query: `query ($key: String!){
-              Leaderboard(key: $key){
+              GlobalIntLeaderboard(key: $key){
                 id
                 score
               }
             }`
   },
-  queryLeaderboardFriends: {
+  queryFriendsIntLeaderboard: {
     query: `query ($key: String!){
-              LeaderboardFriends(key: $key){
+              FriendsIntLeaderboard(key: $key){
                 id
                 score
               }
             }`
   },
-  queryLeaderboardFloat: {
+  queryGlobalFloatLeaderboard: {
     query: `query ($key: String!){
-              LeaderboardFloat(key: $key){
+              GlobalFloatLeaderboard(key: $key){
                 id
                 score
               }
             }`
   },
-  queryLeaderboardFloatFriends: {
+  queryFriendsFloatLeaderboard: {
     query: `query ($key: String!){
-              LeaderboardFloatFriends(key: $key){
+              FriendsFloatLeaderboard(key: $key){
                 id
                 score
               }

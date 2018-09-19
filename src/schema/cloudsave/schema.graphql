@@ -53,9 +53,9 @@ input BooleanDictInput {
 }
 
 type Query {
-    Load: State @isPlayer
+    Load: State @hasRole(requires: PLAYER)
 }
 
 type Mutation {
-    Save(integers: [IntegerDictInput], floats: [FloatDictInput], strings: [StringDictInput], booleans: [BooleanDictInput]) : Boolean @isPlayer
+    Save(integers: [IntegerDictInput], floats: [FloatDictInput], strings: [StringDictInput], booleans: [BooleanDictInput]) : Boolean @hasRole(requires: PLAYER)
 }

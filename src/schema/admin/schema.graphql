@@ -41,15 +41,15 @@ input UpdateAchievementInput {
 }
 
 type Query {
-    me: Admin @isAdmin
-    games: [Game] @isAdmin
-    game(id: Int!): Game @isAdmin
-    readAchievement(id: Int!): Achievement @isAdmin
+    me: Admin @hasRole(requires: ADMIN)
+    games: [Game] @hasRole(requires: ADMIN)
+    game(id: Int!): Game @hasRole(requires: ADMIN)
+    readAchievement(id: Int!): Achievement @hasRole(requires: ADMIN)
 }
 
 type Mutation {
-    createGame(game: GameInput!): Game @isAdmin
-    createAchievement(achievement: AchievementInput!): Achievement @isAdmin
-    updateAchievement(achievement: UpdateAchievementInput!): Achievement @isAdmin
-    deleteAchievement(id: Int!): Boolean @isAdmin
+    createGame(game: GameInput!): Game @hasRole(requires: ADMIN)
+    createAchievement(achievement: AchievementInput!): Achievement @hasRole(requires: ADMIN)
+    updateAchievement(achievement: UpdateAchievementInput!): Achievement @hasRole(requires: ADMIN)
+    deleteAchievement(id: Int!): Boolean @hasRole(requires: ADMIN)
 }
