@@ -1,0 +1,7 @@
+directive @hasRole(requires: Role) on QUERY | FIELD_DEFINITION
+
+enum Role {
+    FACEBOOK
+    PLAYER
+    ADMIN
+}

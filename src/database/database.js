@@ -24,7 +24,8 @@ class Database {
       dialect: config.dialect,
       operatorsAliases: Sequelize.Op,
       pool: {
-        max: 1
+        max: 10,
+        idle: 500
       },
       logging: process.env.DEBUG ? require('debug')('sequelize:logging') : false
     })

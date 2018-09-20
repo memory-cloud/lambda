@@ -21,6 +21,7 @@ describe('An user', () => {
     return request(server)
       .post('/')
       .send(mutationRegister)
+      .expect(200)
   })
 
   afterAll(async () => {

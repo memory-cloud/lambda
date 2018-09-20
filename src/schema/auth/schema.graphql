@@ -1,17 +1,9 @@
-directive @hasRole(requires: Role) on QUERY | FIELD_DEFINITION
-
-enum Role {
-    FACEBOOK
-    PLAYER
-    ADMIN
-}
-
 type Query {
-    login(email: String!, password: String!): String
+    login(email: Email!, password: Password!): String
 }
 
 type Mutation {
-    register(email: String!, password: String!) : String
-    changePassword(oldPassword: String!, newPassword: String!): Boolean @hasRole(requires: ADMIN)
-    rememberPassword(email: String!): String @hasRole(requires: ADMIN)
+    register(email: Email!, password: Password!) : String
+    changePassword(oldPassword: Password!, newPassword: Password!): Boolean @hasRole(requires: ADMIN)
+    rememberPassword(email: Email!): String @hasRole(requires: ADMIN)
 }

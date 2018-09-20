@@ -22,6 +22,7 @@ describe('An admin', () => {
     let res = await request(server)
       .post('/')
       .send(mutationRegister)
+      .expect(200)
     token = res.body.data.register
   })
 

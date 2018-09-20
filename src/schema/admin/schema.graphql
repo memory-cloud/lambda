@@ -1,5 +1,3 @@
-scalar BigInt
-
 type Admin {
     email: String
 }

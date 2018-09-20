@@ -1,5 +1,3 @@
-process.env.DEBUG = 'test, middleware, database'
-
 const { FB } = require('fb')
 const debug = require('debug')('test')
 const request = require('supertest')
@@ -39,6 +37,7 @@ describe('A player', () => {
     let res = await request(server)
       .post('/')
       .send(mutationRegister)
+      .expect(200)
     adminToken = res.body.data.register
 
     mutationCreateGame.variables = {
@@ -51,6 +50,7 @@ describe('A player', () => {
       .post('/')
       .set('admin', adminToken)
       .send(mutationCreateGame)
+      .expect(200)
 
     mutationSaveState.variables = {
       integers: [
@@ -73,10 +73,6 @@ describe('A player', () => {
       .set('appid', process.env.TEST_APPID)
       .send(mutationSaveState)
       .expect(200)
-      .expect(res => {
-        expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.Save).toBe(true)
-      })
 
     mutationSaveState.variables = {
       integers: [
@@ -99,10 +95,6 @@ describe('A player', () => {
       .set('appid', process.env.TEST_APPID)
       .send(mutationSaveState)
       .expect(200)
-      .expect(res => {
-        expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.Save).toBe(true)
-      })
   })
 
   afterAll(async () => {

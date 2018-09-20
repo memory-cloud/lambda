@@ -13,6 +13,6 @@ type ScoreFloat {
 type Query {
     FriendsIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: FACEBOOK)
     GlobalIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: PLAYER)
-    GlobalFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: FACEBOOK)
-    FriendsFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: PLAYER)
+    GlobalFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: PLAYER)
+    FriendsFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: FACEBOOK)
 }

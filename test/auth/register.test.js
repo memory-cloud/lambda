@@ -22,6 +22,7 @@ describe('An user', () => {
     return request(server)
       .post('/')
       .send(mutationRegister)
+      .expect(200)
   })
 
   afterAll(async () => {
@@ -57,7 +58,7 @@ describe('An user', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeDefined()
-        expect(res.body.data.register).toBeNull()
+        expect(res.body.data).toBeUndefined()
       })
   })
 
@@ -84,7 +85,7 @@ describe('An user', () => {
     return request(server)
       .post('/')
       .send(mutationRegister)
-      .expect(200)
+      .expect(500)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
         expect(res.body.data.register).toBeNull()

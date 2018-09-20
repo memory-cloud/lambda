@@ -29,6 +29,7 @@ describe('An admin', () => {
     let res = await request(server)
       .post('/')
       .send(mutationRegister)
+      .expect(200)
     token = res.body.data.register
 
     mutationCreateGame.variables = {
@@ -41,6 +42,7 @@ describe('An admin', () => {
       .post('/')
       .set('admin', token)
       .send(mutationCreateGame)
+      .expect(200)
 
     mutationCreateAchievement.variables = {
       gameId: 1,
@@ -52,6 +54,7 @@ describe('An admin', () => {
       .post('/')
       .set('admin', token)
       .send(mutationCreateAchievement)
+      .expect(200)
   })
 
   afterAll(async () => {

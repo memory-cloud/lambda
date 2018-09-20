@@ -1,4 +1,3 @@
-// const debug = require('debug')('cloudsave-resolver')
 const PlayerRepository = require('../../data/playerRepository')
 
 exports.resolver = {

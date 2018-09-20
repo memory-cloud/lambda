@@ -1,9 +1,7 @@
-scalar URL
-
 type AchievementDone {
     title: String
     description: String
-    completedAt: String
+    completedAt: DateTime
     image: URL
 }
 

@@ -1,0 +1,5 @@
+scalar URL
+scalar DateTime
+scalar Email
+scalar Password
+scalar BigInt

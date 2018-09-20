@@ -1,16 +1,16 @@
 module.exports = {
   queryLogin: {
-    query: `query ($email: String!, $password: String!) {
+    query: `query ($email: Email!, $password: Password!) {
               login(email: $email password: $password)
             }`
   },
   mutationRegister: {
-    query: `mutation ($email: String!, $password: String!) {
+    query: `mutation ($email: Email!, $password: Password!) {
               register(email: $email password: $password)
             }`
   },
   mutationChangePassword: {
-    query: `mutation ($oldPassword: String!, $newPassword: String!) {
+    query: `mutation ($oldPassword: Password!, $newPassword: Password!) {
               changePassword(oldPassword: $oldPassword newPassword: $newPassword)
             }`
   },

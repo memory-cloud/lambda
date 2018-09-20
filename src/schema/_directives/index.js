@@ -1,5 +1,5 @@
 module.exports = {
-  hasRole (next, src, { requires }, context) {
+  hasRole (next, _, { requires }, context) {
     switch (requires) {
       case 'PLAYER':
         if (context.player) return next()

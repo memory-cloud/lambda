@@ -1,5 +1,3 @@
-process.env.DEBUG = 'test, middleware, database'
-
 const { FB } = require('fb')
 const debug = require('debug')('test')
 const request = require('supertest')
@@ -47,6 +45,7 @@ describe('A player', () => {
       .post('/')
       .set('admin', adminToken)
       .send(mutationCreateGame)
+      .expect(200)
 
     mutationCreateAchievement.variables = {
       gameId: 1,
@@ -58,6 +57,8 @@ describe('A player', () => {
       .post('/')
       .set('admin', adminToken)
       .send(mutationCreateAchievement)
+      .expect(200)
+
 
     mutationCreateAchievement.variables = {
       gameId: 1,
@@ -69,6 +70,7 @@ describe('A player', () => {
       .post('/')
       .set('admin', adminToken)
       .send(mutationCreateAchievement)
+      .expect(200)
   })
 
   afterAll(async () => {

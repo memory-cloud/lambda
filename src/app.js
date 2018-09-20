@@ -19,7 +19,7 @@ app.use(
       schema: GraphQLSchema,
       formatError (err) {
         return {
-          path: err.path[0],
+          path: err.path ? err.path[0] : undefined,
           message: err.message
         }
       }

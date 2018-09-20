@@ -10,7 +10,7 @@ class AuthRepository extends Repository {
 
     await admin.validPassword(password)
 
-    return jwt.sign(getPayload(admin, 1), admin.password)
+    return jwt.sign(getPayload(admin), admin.password)
   }
 
   async register (email, password) {
@@ -18,7 +18,7 @@ class AuthRepository extends Repository {
 
     const admin = await this.db.Admin.create({ email: email, password: password })
 
-    return jwt.sign(getPayload(admin, 1), admin.password)
+    return jwt.sign(getPayload(admin), admin.password)
   }
 
   async changePassword (admin, oldPassword, newPassword) {
@@ -29,7 +29,7 @@ class AuthRepository extends Repository {
   }
 }
 
-const getPayload = function (admin, days) {
+const getPayload = function (admin, days = 1) {
   const payload = {}
   payload.id = admin.id
   payload.exp = Date.now() + 1000 * 60 * 60 * 24 * days

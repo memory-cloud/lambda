@@ -1,5 +1,3 @@
-process.env.DEBUG = 'test, resolver:admin,'
-const debug = require('debug')('test')
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
@@ -42,6 +40,7 @@ describe('An admin', () => {
       .post('/')
       .set('admin', token)
       .send(mutationCreateGame)
+      .expect(200)
   })
 
   afterAll(async () => {

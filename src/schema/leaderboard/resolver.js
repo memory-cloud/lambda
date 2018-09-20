@@ -1,5 +1,3 @@
-// const debug = require('debug')('leaderboard-resolver')
-
 const LeaderboardRepository = require('../../data/leaderboardRepository')
 
 exports.resolver = {
