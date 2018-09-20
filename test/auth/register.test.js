@@ -58,7 +58,7 @@ describe('An user', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeDefined()
-        expect(res.body.data).toBeUndefined()
+        expect(res.body.data.register).toBeNull()
       })
   })
 
@@ -88,7 +88,7 @@ describe('An user', () => {
       .expect(500)
       .expect(res => {
         expect(res.body.errors).toHaveLength(1)
-        expect(res.body.data.register).toBeNull()
+        expect(res.body.data).toBeUndefined()
       })
   })
 
