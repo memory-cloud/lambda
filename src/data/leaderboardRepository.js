@@ -12,7 +12,7 @@ class LeaderboardsRepository extends Repository {
       'AND integers.key = :key ' +
       'ORDER BY score DESC ' +
       'LIMIT :offset, :limit',
-      { replacements: { gameId: gameId, key: key, limit: limit, offset: limit * offset } })
+      { replacements: { gameId: gameId, key: key, limit: limit, offset: offset } })
     return leaderboard[0]
   }
 
@@ -25,7 +25,7 @@ class LeaderboardsRepository extends Repository {
       'AND integers.key = :key ' +
       'ORDER BY score DESC ' +
       'LIMIT :offset, :limit',
-      { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: limit * offset } })
+      { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: offset } })
     return leaderboard[0]
   }
 
@@ -38,7 +38,7 @@ class LeaderboardsRepository extends Repository {
       'AND floats.key = :key ' +
       'ORDER BY score DESC ' +
       'LIMIT :offset, :limit',
-      { replacements: { gameId: gameId, key: key, limit: limit, offset: limit * offset } })
+      { replacements: { gameId: gameId, key: key, limit: limit, offset: offset } })
     return leaderboard[0]
   }
 
@@ -51,7 +51,7 @@ class LeaderboardsRepository extends Repository {
       'AND floats.key = :key ' +
       'ORDER BY score DESC ' +
       'LIMIT :offset, :limit',
-      { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: limit * offset } })
+      { replacements: { playersIds: await getFriends(player), key: key, limit: limit, offset: offset } })
     return leaderboard[0]
   }
 }
