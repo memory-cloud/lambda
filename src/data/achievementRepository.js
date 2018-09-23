@@ -3,7 +3,7 @@ const GameRepository = require('./gameRepository')
 
 class AchievementRepository extends Repository {
   async completeAchievement (player, title) {
-    const achievement = await this.db.Achievement.findOne({ where: { title: title, gameId: player.gameId }, attributes: ['id'] })
+    const achievement = await this.db.Achievement.findOne({ where: { title: title, gameId: player.gameId } })
 
     if (!achievement) throw new Error('Achievement not found')
 
@@ -12,7 +12,7 @@ class AchievementRepository extends Repository {
       'VALUES (:achievementId, :playerId)',
       { replacements: { achievementId: achievement.id, playerId: player.id } })
 
-    return true
+    return achievement
   }
 
   async getAchievementsByPlayer (player) {

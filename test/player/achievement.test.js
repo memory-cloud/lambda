@@ -59,7 +59,6 @@ describe('A player', () => {
       .send(mutationCreateAchievement)
       .expect(200)
 
-
     mutationCreateAchievement.variables = {
       gameId: 1,
       title: 'title2',
@@ -91,7 +90,7 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.CompleteAchievement).toBe(true)
+        expect(res.body.data.CompleteAchievement.title).toBe('title')
       })
 
     return request(server)

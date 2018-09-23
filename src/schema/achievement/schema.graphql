@@ -10,5 +10,5 @@ type Query {
 }
 
 type Mutation {
-    CompleteAchievement(title: String!): Boolean @hasRole(requires: PLAYER)
+    CompleteAchievement(title: String!): AchievementDone @hasRole(requires: PLAYER)
 }
