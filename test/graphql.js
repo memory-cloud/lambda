@@ -179,7 +179,11 @@ module.exports = {
   },
   mutationCompleteAchievement: {
     query: `mutation ($title: String!) {
-              CompleteAchievement(title: $title)
+              CompleteAchievement(title: $title){
+                title
+                description
+                image
+              }
             }
     `
   },
