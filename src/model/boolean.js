@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
     playerId: {
       type: Sequelize.INTEGER,
       references: {
-        model: sequelize.import('./player')
+        model: sequelize.Player
       },
       unique: 'compositeIndex',
       allowNull: false

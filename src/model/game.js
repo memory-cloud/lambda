@@ -36,7 +36,7 @@ module.exports = (sequelize) => {
     return this.appid + '|' + this.secret
   }
 
-  Game.belongsTo(sequelize.import('./admin'), { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+  Game.belongsTo(sequelize.Admin, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
 
   return Game
 }

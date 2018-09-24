@@ -20,7 +20,7 @@ module.exports = (sequelize) => {
     gameId: {
       type: Sequelize.INTEGER,
       references: {
-        model: 'games'
+        model: sequelize.Game
       },
       unique: 'compositeIndex',
       allowNull: false

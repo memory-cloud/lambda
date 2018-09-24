@@ -31,13 +31,13 @@ class Database {
     })
 
     this.sequelize.Admin = Model.get('Admin', this.sequelize)
-    this.sequelize.Achievement = Model.get('Achievement', this.sequelize)
     this.sequelize.Game = Model.get('Game', this.sequelize)
+    this.sequelize.Achievement = Model.get('Achievement', this.sequelize)
+    this.sequelize.Player = Model.get('Player', this.sequelize)
     this.sequelize.Integer = Model.get('Integer', this.sequelize)
     this.sequelize.Float = Model.get('Float', this.sequelize)
     this.sequelize.Boolean = Model.get('Boolean', this.sequelize)
     this.sequelize.String = Model.get('String', this.sequelize)
-    this.sequelize.Player = Model.get('Player', this.sequelize)
   }
 
   async sync (force) {

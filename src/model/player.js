@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
     gameId: {
       type: Sequelize.INTEGER,
       references: {
-        model: 'games'
+        model: sequelize.Game
       },
       unique: 'compositeIndex',
       allowNull: false
@@ -20,12 +20,17 @@ module.exports = (sequelize) => {
       fields: ['id', 'fbid', 'gameId']
     }] }
   )
-  Player.belongsToMany(sequelize.import('./achievement'), {
+  Player.belongsToMany(sequelize.Achievement, {
     through: sequelize.define('player_has_achievements', {
       createdAt: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
         allowNull: false
+      },
+      updatedAt: {
+        type: Sequelize.STRING,
+        defaultValue: null,
+        allowNull: true
       }
     })
   })
