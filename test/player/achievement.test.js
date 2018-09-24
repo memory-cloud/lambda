@@ -3,79 +3,37 @@ const debug = require('debug')('test')
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
+const Helper = require('../helper')
 const {
-  mutationRegister,
-  mutationCreateGame,
-  mutationCreateAchievement,
   mutationCompleteAchievement,
   queryAchievements
 } = require('../graphql')
 
 describe('A player', () => {
   var server
-  var adminToken
   var player1Token
+  var helper
 
   beforeAll(async () => {
     server = await app.listen()
     const playersToken = await getTestTokens()
+    helper = new Helper(server)
     player1Token = playersToken.data[0].access_token
     return database.createDatabase()
   })
 
   beforeEach(async () => {
     await database.sync(true)
-
-    mutationRegister.variables = {
-      email: 'existent@user.com',
-      password: 'password'
-    }
-    let res = await request(server)
-      .post('/')
-      .send(mutationRegister)
-    adminToken = res.body.data.register
-
-    mutationCreateGame.variables = {
-      name: 'Test Game',
-      appid: process.env.TEST_APPID,
-      secret: process.env.TEST_APPSECRET
-    }
-
-    await request(server)
-      .post('/')
-      .set('admin', adminToken)
-      .send(mutationCreateGame)
-      .expect(200)
-
-    mutationCreateAchievement.variables = {
-      gameId: 1,
-      title: 'title',
-      description: 'description',
-      image: 'https://www.example.com/img.png'
-    }
-    await request(server)
-      .post('/')
-      .set('admin', adminToken)
-      .send(mutationCreateAchievement)
-      .expect(200)
-
-    mutationCreateAchievement.variables = {
-      gameId: 1,
-      title: 'title2',
-      description: 'description2',
-      image: 'https://www.example.com/img2.png'
-    }
-    return request(server)
-      .post('/')
-      .set('admin', adminToken)
-      .send(mutationCreateAchievement)
-      .expect(200)
+    await helper.Register('existent@user.com', 'password')
+    await helper.CreateGame('Test Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
+    await helper.CreateAchievement(1, 'title', 'description', 'https://www.example.com/img.png')
+    return helper.CreateAchievement(1, 'title2', 'description2', 'https://www.example.com/img.png')
   })
 
   afterAll(async () => {
     await server.close()
     await database.dropDatabase()
-    await database.close()
+    return database.close()
   })
 
   it('should complete achievement', async () => {

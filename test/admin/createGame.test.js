@@ -1,41 +1,23 @@
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
-const { mutationRegister, mutationCreateGame } = require('../graphql')
+const { mutationCreateGame } = require('../graphql')
+const Helper = require('../helper')
 
 describe('An admin', () => {
   var server
-  var token
+  var helper
 
   beforeAll(async () => {
     server = await app.listen()
+    helper = new Helper(server)
     return database.createDatabase()
   })
 
   beforeEach(async () => {
     await database.sync(true)
-
-    mutationRegister.variables = {
-      email: 'existent@user.com',
-      password: 'password'
-    }
-    let res = await request(server)
-      .post('/')
-      .send(mutationRegister)
-      .expect(200)
-    token = res.body.data.register
-
-    mutationCreateGame.variables = {
-      name: 'Valid Game',
-      appid: 12345,
-      secret: 'valid-secret'
-    }
-
-    return request(server)
-      .post('/')
-      .set('admin', token)
-      .send(mutationCreateGame)
-      .expect(200)
+    await helper.Register('existent@user.com', 'password')
+    return helper.CreateGame('Valid Game', 12345, 'valid-secret')
   })
 
   afterAll(async () => {
@@ -52,7 +34,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
@@ -72,7 +54,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
@@ -89,7 +71,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
@@ -106,7 +88,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {
@@ -123,7 +105,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationCreateGame)
       .expect(200)
       .expect(res => {

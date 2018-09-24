@@ -1,29 +1,22 @@
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
-const { mutationRegister, mutationChangePassword } = require('../graphql')
+const { mutationChangePassword } = require('../graphql')
+const Helper = require('../helper')
 
 describe('An admin', () => {
   var server
-  var token
+  var helper
 
   beforeAll(async () => {
     server = await app.listen()
+    helper = new Helper(server)
     return database.createDatabase()
   })
 
   beforeEach(async () => {
     await database.sync(true)
-
-    mutationRegister.variables = {
-      email: 'existent@user.com',
-      password: 'password'
-    }
-    let res = await request(server)
-      .post('/')
-      .send(mutationRegister)
-      .expect(200)
-    token = res.body.data.register
+    return helper.Register('existent@user.com', 'password')
   })
 
   afterAll(async () => {
@@ -39,7 +32,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationChangePassword)
       .expect(200)
       .expect(res => {
@@ -55,7 +48,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationChangePassword)
       .expect(200)
       .expect(res => {
@@ -71,7 +64,7 @@ describe('An admin', () => {
     }
     return request(server)
       .post('/')
-      .set('admin', token)
+      .set('admin', helper.adminToken)
       .send(mutationChangePassword)
       .expect(200)
       .expect(res => {

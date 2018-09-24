@@ -1,27 +1,22 @@
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
-const { mutationRegister, queryLogin } = require('../graphql')
+const { queryLogin } = require('../graphql')
+const Helper = require('../helper')
 
 describe('An user', () => {
   var server
+  var helper
 
   beforeAll(async () => {
     server = await app.listen()
+    helper = new Helper(server)
     return database.createDatabase()
   })
 
   beforeEach(async () => {
     await database.sync(true)
-
-    mutationRegister.variables = {
-      email: 'existent@user.com',
-      password: 'password'
-    }
-    return request(server)
-      .post('/')
-      .send(mutationRegister)
-      .expect(200)
+    return helper.Register('existent@user.com', 'password')
   })
 
   afterAll(async () => {

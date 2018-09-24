@@ -3,9 +3,8 @@ const debug = require('debug')('test')
 const request = require('supertest')
 const app = require('../../src/app')
 const database = require('../../src/database/database')
+const Helper = require('../helper')
 const {
-  mutationRegister,
-  mutationCreateGame,
   mutationSaveState,
   queryGlobalIntLeaderboard,
   queryFriendsIntLeaderboard,
@@ -15,12 +14,13 @@ const {
 
 describe('A player', () => {
   var server
-  var adminToken
+  var helper
   var player1Token
   var player2Token
 
   beforeAll(async () => {
     server = await app.listen()
+    helper = new Helper(server)
     const playersToken = await getTestTokens()
     player1Token = playersToken.data[0].access_token
     player2Token = playersToken.data[1].access_token
@@ -29,28 +29,8 @@ describe('A player', () => {
 
   beforeEach(async () => {
     await database.sync(true)
-
-    mutationRegister.variables = {
-      email: 'existent@user.com',
-      password: 'password'
-    }
-    let res = await request(server)
-      .post('/')
-      .send(mutationRegister)
-      .expect(200)
-    adminToken = res.body.data.register
-
-    mutationCreateGame.variables = {
-      name: 'Test Game',
-      appid: process.env.TEST_APPID,
-      secret: process.env.TEST_APPSECRET
-    }
-
-    await request(server)
-      .post('/')
-      .set('admin', adminToken)
-      .send(mutationCreateGame)
-      .expect(200)
+    await helper.Register('existent@user.com', 'password')
+    await helper.CreateGame('Test Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
 
     mutationSaveState.variables = {
       integers: [
