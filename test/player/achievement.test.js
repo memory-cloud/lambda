@@ -1,9 +1,8 @@
-const { FB } = require('fb')
+const Facebook = require('../../src/service/facebook')
 const debug = require('debug')('test')
 const request = require('supertest')
-const app = require('../../src/app')
-const database = require('../../src/database/database')
 const Helper = require('../helper')
+const Setup = require('../setup')
 const {
   mutationCompleteAchievement,
   queryAchievements
@@ -11,29 +10,29 @@ const {
 
 describe('A player', () => {
   var server
-  var player1Token
+  var playersToken
   var helper
 
   beforeAll(async () => {
-    server = await app.listen()
-    const playersToken = await getTestTokens()
+    server = await Setup.setup()
+    playersToken = await new Facebook(`${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
     helper = new Helper(server)
-    player1Token = playersToken.data[0].access_token
-    return database.createDatabase()
   })
 
   beforeEach(async () => {
-    await database.sync(true)
+    await Setup.beforeEach()
     await helper.Register('existent@user.com', 'password')
-    await helper.CreateGame('Test Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
+    await helper.CreateGame('GlobalIntLeaderboard Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
     await helper.CreateAchievement(1, 'title', 'description', 'https://www.example.com/img.png')
     return helper.CreateAchievement(1, 'title2', 'description2', 'https://www.example.com/img.png')
   })
 
+  afterEach(async () => {
+    return Setup.afterEach()
+  })
+
   afterAll(async () => {
-    await server.close()
-    await database.dropDatabase()
-    return database.close()
+    return Setup.teardown(server)
   })
 
   it('should complete achievement', async () => {
@@ -42,7 +41,7 @@ describe('A player', () => {
     }
     await request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(mutationCompleteAchievement)
       .expect(200)
@@ -53,7 +52,7 @@ describe('A player', () => {
 
     return request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(queryAchievements)
       .expect(200)
@@ -74,7 +73,7 @@ describe('A player', () => {
     }
     return request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(mutationCompleteAchievement)
       .expect(200)
@@ -84,8 +83,3 @@ describe('A player', () => {
       })
   })
 })
-
-const getTestTokens = async () => {
-  FB.setAccessToken(process.env.TEST_APPID + '|' + process.env.TEST_APPSECRET)
-  return FB.api(process.env.TEST_APPID + '/accounts/test-users?fields=access_token')
-}

@@ -1,5 +1,5 @@
 const debug = require('debug')('middleware:admin')
-const AdminRepository = require('../data/adminRepository')
+const AdminRepository = require('../database/sequelize/repository/adminRepository')
 
 module.exports = async (req, res, next) => {
   if (!req.headers.admin) return next()
@@ -8,12 +8,9 @@ module.exports = async (req, res, next) => {
 
   try {
     req.context.admin = await new AdminRepository(req.context.db).findByToken(credentials)
-
-    if (!req.context.admin) return res.status(404).send('Admin not found')
-
     next()
   } catch (err) {
     debug(err)
-    return res.status(401).send(err)
+    res.status(401).send(err)
   }
 }

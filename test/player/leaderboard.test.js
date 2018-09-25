@@ -1,9 +1,9 @@
-const { FB } = require('fb')
+const Facebook = require('../../src/service/facebook')
 const debug = require('debug')('test')
 const request = require('supertest')
-const app = require('../../src/app')
-const database = require('../../src/database/database')
 const Helper = require('../helper')
+const Setup = require('../setup')
+
 const {
   mutationSaveState,
   queryGlobalIntLeaderboard,
@@ -15,22 +15,18 @@ const {
 describe('A player', () => {
   var server
   var helper
-  var player1Token
-  var player2Token
+  var playersToken
 
   beforeAll(async () => {
-    server = await app.listen()
+    server = await Setup.setup()
     helper = new Helper(server)
-    const playersToken = await getTestTokens()
-    player1Token = playersToken.data[0].access_token
-    player2Token = playersToken.data[1].access_token
-    return database.createDatabase()
+    playersToken = await new Facebook(`${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
   })
 
   beforeEach(async () => {
-    await database.sync(true)
+    await Setup.beforeEach()
     await helper.Register('existent@user.com', 'password')
-    await helper.CreateGame('Test Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
+    await helper.CreateGame('GlobalIntLeaderboard Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
 
     mutationSaveState.variables = {
       integers: [
@@ -49,7 +45,7 @@ describe('A player', () => {
 
     await request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(mutationSaveState)
       .expect(200)
@@ -71,16 +67,18 @@ describe('A player', () => {
 
     return request(server)
       .post('/')
-      .set('player', player2Token)
+      .set('player', playersToken.player2)
       .set('appid', process.env.TEST_APPID)
       .send(mutationSaveState)
       .expect(200)
   })
 
+  afterEach(async () => {
+    return Setup.afterEach()
+  })
+
   afterAll(async () => {
-    await server.close()
-    await database.dropDatabase()
-    await database.close()
+    return Setup.teardown(server)
   })
 
   it('should get leaderboard', async () => {
@@ -89,7 +87,7 @@ describe('A player', () => {
     }
     return request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(queryGlobalIntLeaderboard)
       .expect(200)
@@ -105,7 +103,7 @@ describe('A player', () => {
     }
     return request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(queryFriendsIntLeaderboard)
       .expect(200)
@@ -121,7 +119,7 @@ describe('A player', () => {
     }
     return request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(queryGlobalFloatLeaderboard)
       .expect(200)
@@ -137,7 +135,7 @@ describe('A player', () => {
     }
     return request(server)
       .post('/')
-      .set('player', player1Token)
+      .set('player', playersToken.player1)
       .set('appid', process.env.TEST_APPID)
       .send(queryFriendsFloatLeaderboard)
       .expect(200)
@@ -147,8 +145,3 @@ describe('A player', () => {
       })
   })
 })
-
-const getTestTokens = async () => {
-  FB.setAccessToken(process.env.TEST_APPID + '|' + process.env.TEST_APPSECRET)
-  return FB.api(process.env.TEST_APPID + '/accounts/test-users?fields=access_token')
-}

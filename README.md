@@ -34,9 +34,8 @@ The tests need 2 test users from Facebook.
 Go to Facebook Developers > My App > Roles > Test Users to create them.
 
 ### Locally
-Rename .env.test.example to .env.test
 
-Set Facebook Test App id and secret in .env.test
+Rename .env.test.example to .env.test
 
 Set mysql and Facebook App settings and in .env.test
 

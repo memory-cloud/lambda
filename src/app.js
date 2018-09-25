@@ -3,9 +3,9 @@ const expressGraphQL = require('express-graphql')
 const GraphQLSchema = require('./schema')
 const app = express()
 
-app.use(require('./middlewares/context'))
-app.use(require('./middlewares/player'))
-app.use(require('./middlewares/admin'))
+app.use(require('./middleware/context'))
+app.use(require('./middleware/player'))
+app.use(require('./middleware/admin'))
 
 app.use(
   '/',

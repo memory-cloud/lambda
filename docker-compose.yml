@@ -10,16 +10,23 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-  memorycloud:
-    build: ./
-    depends_on:
-     - "db"
-    restart: always
-    environment:
-      MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_DATABASE: memorycloud
+  mongodb:
+    image: mongo:3.4
+    volumes:
+    - db_data:/data/db
+    ports:
+    - 27017:27017
+#  memorycloud:
+#    build: ./
+#    depends_on:
+#     - "db"
+#    restart: always
+#    environment:
+#      MYSQL_HOST: db
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#      MYSQL_DATABASE: memorycloud
+#      MONGODB_URI: mongodb://mongodb:27017/memorycloud
 
 volumes:
   db_data:

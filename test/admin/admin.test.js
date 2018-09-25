@@ -1,32 +1,32 @@
 const request = require('supertest')
-const app = require('../../src/app')
-const database = require('../../src/database/database')
 const Helper = require('../helper')
 const {
   queryMe,
   queryGames,
   queryGame
 } = require('../graphql')
+const Setup = require('../setup')
 
 describe('An admin', () => {
   var server
   var helper
   beforeAll(async () => {
-    server = await app.listen()
+    server = await Setup.setup()
     helper = new Helper(server)
-    return database.createDatabase()
   })
 
   beforeEach(async () => {
-    await database.sync(true)
+    await Setup.beforeEach()
     await helper.Register('existent@user.com', 'password')
     return helper.CreateGame('Valid Game', 12345, 'valid-secret')
   })
 
+  afterEach(async () => {
+    return Setup.afterEach()
+  })
+
   afterAll(async () => {
-    await server.close()
-    await database.dropDatabase()
-    return database.close()
+    return Setup.teardown(server)
   })
 
   it('should get information', () => {

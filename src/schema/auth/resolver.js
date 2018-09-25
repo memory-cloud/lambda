@@ -1,10 +1,13 @@
-const AuthRepository = require('../../data/authRepository')
+const AuthRepository = require('../../database/sequelize/repository/authRepository')
 
 exports.resolver = {
   Query: {
     login (_, { email, password }, context) {
       return new AuthRepository(context.db).login(email, password)
-    }
+    }// ,
+    // confirm (_, { email, confirmation }, context) {
+    //   return new AuthRepository(context.db).confirm(email, confirmation)
+    // }
   },
   Mutation: {
     register (_, { email, password }, context) {

@@ -1,6 +1,4 @@
 const request = require('supertest')
-const app = require('../../src/app')
-const database = require('../../src/database/database')
 const {
   mutationCreateAchievement,
   mutationUpdateAchievement,
@@ -9,28 +7,30 @@ const {
 } = require('../graphql')
 const debug = require('debug')('test')
 const Helper = require('../helper')
+const Setup = require('../setup')
 
 describe('An admin', () => {
   var server
   var helper
 
   beforeAll(async () => {
-    server = await app.listen()
+    server = await Setup.setup()
     helper = new Helper(server)
-    return database.createDatabase()
   })
 
   beforeEach(async () => {
-    await database.sync(true)
+    await Setup.beforeEach()
     await helper.Register('existent@user.com', 'password')
-    await helper.CreateGame('Test Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
+    await helper.CreateGame('GlobalIntLeaderboard Game', process.env.TEST_APPID, process.env.TEST_APPSECRET)
     return helper.CreateAchievement(1, 'title', 'description', 'https://www.example.com/img.png')
   })
 
+  afterEach(async () => {
+    return Setup.afterEach()
+  })
+
   afterAll(async () => {
-    await server.close()
-    await database.dropDatabase()
-    return database.close()
+    return Setup.teardown(server)
   })
 
   it('should create a valid achievement', () => {

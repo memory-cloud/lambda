@@ -1,5 +1,6 @@
 type Query {
     login(email: Email!, password: Password!): String
+#    confirm(email: Email!, confirmation: String!) : Boolean
 }
 
 type Mutation {

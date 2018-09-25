@@ -1,17 +1,14 @@
 const Repository = require('./repository')
 const GameRepository = require('./gameRepository')
-
+const { AchievementNotFoundError } = require('../../../error')
 class AchievementRepository extends Repository {
   async completeAchievement (player, title) {
     const achievement = await this.db.Achievement.findOne({ where: { title: title, gameId: player.gameId } })
-
-    if (!achievement) throw new Error('Achievement not found')
-
+    if (!achievement) throw new AchievementNotFoundError()
     await this.db.query(
       'INSERT INTO player_has_achievements (achievementId, playerId) ' +
       'VALUES (:achievementId, :playerId)',
       { replacements: { achievementId: achievement.id, playerId: player.id } })
-
     return achievement
   }
 
@@ -28,9 +25,7 @@ class AchievementRepository extends Repository {
 
   async createAchievement (admin, achievement) {
     const game = await new GameRepository(this.db).game(admin, achievement.gameId)
-
     achievement.gameId = game.id
-
     return this.db.Achievement.create(achievement)
   }
 
@@ -44,19 +39,14 @@ class AchievementRepository extends Repository {
 
   async readAchievement (admin, id) {
     const achievement = await this.db.Achievement.findOne({ where: { id: id } })
-
-    if (!achievement) throw new Error('Achievement not found')
-
+    if (!achievement) throw new AchievementNotFoundError()
     await new GameRepository(this.db).game(admin, achievement.gameId)
-
     return achievement
   }
 
   async deleteAchievement (admin, id) {
     const achievement = await this.readAchievement(admin, id)
-
     await this.db.Achievement.destroy({ where: { id: achievement.id } })
-
     return true
   }
 

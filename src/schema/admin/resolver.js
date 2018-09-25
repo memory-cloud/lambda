@@ -1,6 +1,6 @@
-const AdminRepository = require('../../data/adminRepository')
-const GameRepository = require('../../data/gameRepository')
-const AchievementRepository = require('../../data/achievementRepository')
+const AdminRepository = require('../../database/sequelize/repository/adminRepository')
+const GameRepository = require('../../database/sequelize/repository/gameRepository')
+const AchievementRepository = require('../../database/sequelize/repository/achievementRepository')
 
 exports.resolver = {
   Game: {
