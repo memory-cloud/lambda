@@ -12,7 +12,7 @@ module.exports = {
     database: process.env.MONGODB_DATABASE
   },
   travis: {
-    uri: 'mongodb://travis:test@127.0.0.1/',
+    uri: 'mongodb://127.0.0.1/',
     database: 'mydb_test'
   }
 }
