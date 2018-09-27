@@ -32,7 +32,7 @@ describe('A player', () => {
   })
 
   afterAll(async () => {
-    return Setup.teardown(server)
+    return Setup.afterAll(server)
   })
 
   it('should complete achievement', async () => {

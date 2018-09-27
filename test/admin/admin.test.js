@@ -26,7 +26,7 @@ describe('An admin', () => {
   })
 
   afterAll(async () => {
-    return Setup.teardown(server)
+    return Setup.afterAll(server)
   })
 
   it('should get information', () => {

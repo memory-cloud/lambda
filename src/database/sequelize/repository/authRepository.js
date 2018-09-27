@@ -36,10 +36,10 @@ class AuthRepository extends Repository {
   // }
 }
 
-const getPayload = function (admin, days = 1) {
+const getPayload = function (admin, minutesToExpire = 120) {
   const payload = {}
   payload.id = admin.id
-  payload.exp = Date.now() + 1000 * 60 * 60 * 24 * days
+  payload.exp = Date.now() + 1000 * 60 * minutesToExpire
   return payload
 }
 

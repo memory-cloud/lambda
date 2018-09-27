@@ -78,13 +78,24 @@ describe('A player', () => {
   })
 
   afterAll(async () => {
-    return Setup.teardown(server)
+    return Setup.afterAll(server)
   })
 
   it('should get leaderboard', async () => {
     queryGlobalIntLeaderboard.variables = {
       key: 'asd'
     }
+    await request(server)
+      .post('/')
+      .set('player', playersToken.player1)
+      .set('appid', process.env.TEST_APPID)
+      .send(queryGlobalIntLeaderboard)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toBeUndefined()
+        expect(res.body.data.GlobalIntLeaderboard).toHaveLength(2)
+      })
+
     return request(server)
       .post('/')
       .set('player', playersToken.player1)
@@ -101,6 +112,18 @@ describe('A player', () => {
     queryFriendsIntLeaderboard.variables = {
       key: 'asd'
     }
+
+    await request(server)
+      .post('/')
+      .set('player', playersToken.player1)
+      .set('appid', process.env.TEST_APPID)
+      .send(queryFriendsIntLeaderboard)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toBeUndefined()
+        expect(res.body.data.FriendsIntLeaderboard).toHaveLength(2)
+      })
+
     return request(server)
       .post('/')
       .set('player', playersToken.player1)
@@ -117,6 +140,17 @@ describe('A player', () => {
     queryGlobalFloatLeaderboard.variables = {
       key: 'asd'
     }
+    await request(server)
+      .post('/')
+      .set('player', playersToken.player1)
+      .set('appid', process.env.TEST_APPID)
+      .send(queryGlobalFloatLeaderboard)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toBeUndefined()
+        expect(res.body.data.GlobalFloatLeaderboard).toHaveLength(2)
+      })
+
     return request(server)
       .post('/')
       .set('player', playersToken.player1)
@@ -133,6 +167,17 @@ describe('A player', () => {
     queryFriendsFloatLeaderboard.variables = {
       key: 'asd'
     }
+    await request(server)
+      .post('/')
+      .set('player', playersToken.player1)
+      .set('appid', process.env.TEST_APPID)
+      .send(queryFriendsFloatLeaderboard)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.errors).toBeUndefined()
+        expect(res.body.data.FriendsFloatLeaderboard).toHaveLength(2)
+      })
+
     return request(server)
       .post('/')
       .set('player', playersToken.player1)

@@ -22,7 +22,7 @@ describe('An user', () => {
   })
 
   afterAll(async () => {
-    return Setup.teardown(server)
+    return Setup.afterAll(server)
   })
 
   it('should login with right credentials', () => {

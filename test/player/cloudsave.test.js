@@ -30,7 +30,7 @@ describe('A player', () => {
   })
 
   afterAll(async () => {
-    return Setup.teardown(server)
+    return Setup.afterAll(server)
   })
 
   it('should save and load state', async () => {
