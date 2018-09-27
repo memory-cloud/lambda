@@ -1,6 +1,6 @@
 class Collection {
-  constructor (db, name) {
-    this.collection = db.collection(name)
+  constructor (db) {
+    this.collection = db.collection(this.constructor.name)
   }
 }
 
