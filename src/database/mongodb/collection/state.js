@@ -1,5 +1,5 @@
 const Facebook = require('../../../service/facebook')
-// const debug = require('debug')('collection:state')
+const debug = require('debug')('collection:state')
 class State extends require('./collection') {
   async Save (player, state) {
     state.playerId = `${player.fbid}`
@@ -13,31 +13,74 @@ class State extends require('./collection') {
   }
 
   async GlobalIntLeaderboard (player, key, pageSize, page) {
-    return this.collection.aggregate([
-      { $match: { 'gameId': player.gameId } },
-      ...Options('integers', key, pageSize, page)
-    ]).toArray()
+    const id = `global-integers-${pageSize}-${page}-${player.gameId}-${key}`
+    try {
+      return await this.GetFromCache(id)
+    } catch (err) {
+      const leaderboard = await this.collection.aggregate([
+        { $match: { 'gameId': player.gameId } },
+        ...Options('integers', key, pageSize, page)
+      ]).toArray()
+
+      this.cache.setex(id, 300, JSON.stringify(leaderboard))
+
+      return leaderboard
+    }
   }
 
   async FriendsIntLeaderboard (player, key, pageSize, page) {
-    return this.collection.aggregate([
-      { $match: { 'playerId': { '$in': await new Facebook(player.token).getFriendsByPlayer(player) } } },
-      ...Options('integers', key, pageSize, page)
-    ]).toArray()
+    const id = `friends-integers-${pageSize}-${page}-${player.id}-${key}`
+    try {
+      return await this.GetFromCache(id)
+    } catch (err) {
+      const leaderboard = await this.collection.aggregate([
+        { $match: { 'playerId': { '$in': await new Facebook(player.token).getFriendsByPlayer(player) } } },
+        ...Options('integers', key, pageSize, page)
+      ]).toArray()
+
+      this.cache.setex(id, 300, JSON.stringify(leaderboard))
+
+      return leaderboard
+    }
   }
 
   async GlobalFloatLeaderboard (player, key, pageSize, page) {
-    return this.collection.aggregate([
-      { $match: { 'gameId': player.gameId } },
-      ...Options('floats', key, pageSize, page)
-    ]).toArray()
+    const id = `global-floats-${pageSize}-${page}-${player.gameId}-${key}`
+    try {
+      return await this.GetFromCache(id)
+    } catch (err) {
+      const leaderboard = await this.collection.aggregate([
+        { $match: { 'gameId': player.gameId } },
+        ...Options('floats', key, pageSize, page)
+      ]).toArray()
+
+      this.cache.setex(id, 300, JSON.stringify(leaderboard))
+
+      return leaderboard
+    }
   }
 
   async FriendsFloatLeaderboard (player, key, pageSize, page) {
-    return this.collection.aggregate([
-      { $match: { 'playerId': { '$in': await new Facebook(player.token).getFriendsByPlayer(player) } } },
-      ...Options('floats', key, pageSize, page)
-    ]).toArray()
+    const id = `friends-floats-${pageSize}-${page}-${player.id}-${key}`
+    try {
+      return await this.GetFromCache(id)
+    } catch (err) {
+      const leaderboard = await this.collection.aggregate([
+        { $match: { 'playerId': { '$in': await new Facebook(player.token).getFriendsByPlayer(player) } } },
+        ...Options('floats', key, pageSize, page)
+      ]).toArray()
+
+      this.cache.setex(id, 300, JSON.stringify(leaderboard))
+
+      return leaderboard
+    }
+  }
+
+  async GetFromCache (id) {
+    const leaderboard = await this.cache.get(id)
+    if (!leaderboard) throw new Error('Cache not found')
+    debug('from cache')
+    return JSON.parse(leaderboard)
   }
 }
 

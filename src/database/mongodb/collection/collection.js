@@ -1,6 +1,7 @@
 class Collection {
-  constructor (db) {
+  constructor (db, redis) {
     this.collection = db.collection(this.constructor.name)
+    this.cache = redis
   }
 }
 

@@ -1,7 +1,8 @@
 const database = require('../src/database/sequelize')
 const mongodb = require('../src/database/mongodb')
-const app = require('../src/app')
+const redis = require('../src/database/redis')
 
+const app = require('../src/app')
 class Setup {
   static async setup () {
     let server = await app.listen()
@@ -10,18 +11,20 @@ class Setup {
     return server
   }
 
-  static async teardown (server) {
+  static async afterAll (server) {
     await server.close()
     await database.dropDatabase()
     await mongodb.dropDatabase()
     await mongodb.close()
+    await redis.flush()
+    await redis.close()
     return database.close()
   }
 
   static async beforeEach () {
     await database.sync(true)
+    await redis.flush()
     return mongodb.createDatabase()
-
   }
 
   static async afterEach () {
