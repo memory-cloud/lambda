@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
   const token = req.headers.player
   try {
     const game = await new GameRepository(req.context.db).findByAppId(appid)
-    req.context.player = await new PlayerRepository(req.context.db).findByGameAndToken(game, token)
+    req.context.player = await new PlayerRepository(req.context.db, req.context.redis).findByGameAndToken(game, token)
     if (req.context.player) return next()
     return res.status(401)
   } catch (err) {

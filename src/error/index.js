@@ -3,7 +3,8 @@ module.exports = {
   WrongCredentialsError: require('./WrongCredentialsError'),
   GameNotFoundError: require('./GameNotFoundError'),
   TokenExpiredError: require('./TokenExpiredError'),
-  AchievementNotFoundError: require('./AchievementNotFoundError')
+  AchievementNotFoundError: require('./AchievementNotFoundError'),
+  FacebookServiceError: require('./FacebookServiceError')
 }
 
 // const fs = require('fs')

@@ -4,7 +4,7 @@ const Facebook = require('../../../service/facebook')
 
 class PlayerRepository extends Repository {
   async findByGameAndToken (game, token) {
-    const fbid = await new Facebook(game.getToken()).getIdByToken(token)
+    const fbid = await new Facebook(game.getToken(), this.redis).getIdByToken(token)
     const player = await this.db.Player.findOrCreate({ where: { fbid: fbid, gameId: game.id } })
     player[0].token = token
     return player[0]
