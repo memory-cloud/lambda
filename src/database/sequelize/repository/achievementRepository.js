@@ -6,19 +6,19 @@ class AchievementRepository extends Repository {
     const achievement = await this.db.Achievement.findOne({ where: { title: title, gameId: player.gameId } })
     if (!achievement) throw new AchievementNotFoundError()
     await this.db.query(
-      'INSERT INTO player_has_achievements (achievementId, playerId) ' +
-      'VALUES (:achievementId, :playerId)',
+      `INSERT INTO player_has_achievements (achievementId, playerId)
+      VALUES (:achievementId, :playerId)`,
       { replacements: { achievementId: achievement.id, playerId: player.id } })
     return achievement
   }
 
   async getAchievementsByPlayer (player) {
     const achievements = await this.db.query(
-      'SELECT a.image, a.title, a.description, pa.createdAt AS completedAt ' +
-      'FROM achievements a ' +
-      'LEFT JOIN player_has_achievements pa ON (pa.achievementId = a.id AND pa.playerId = :playerId) ' +
-      'WHERE a.gameId = :gameId ' +
-      'ORDER BY completedAt DESC',
+      `SELECT a.image, a.title, a.description, pa.createdAt AS completedAt
+      FROM achievements a
+      LEFT JOIN player_has_achievements pa ON (pa.achievementId = a.id AND pa.playerId = :playerId)
+      WHERE a.gameId = :gameId
+      ORDER BY completedAt DESC`,
       { replacements: { playerId: player.id, gameId: player.gameId } })
     return achievements[0]
   }
@@ -31,9 +31,7 @@ class AchievementRepository extends Repository {
 
   async updateAchievement (admin, achievement) {
     await this.readAchievement(admin, achievement.id)
-
     await this.db.Achievement.update(achievement, { where: { id: achievement.id } })
-
     return achievement
   }
 
