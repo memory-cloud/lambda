@@ -3,3 +3,4 @@ scalar DateTime
 scalar Email
 scalar Password
 scalar BigInt
+scalar JSON

@@ -3,6 +3,7 @@ type State {
     floats: [FloatDict]
     booleans: [BooleanDict]
     strings: [StringDict]
+    objects: [ObjectDict]
 }
 
 input StateInput {
@@ -10,6 +11,12 @@ input StateInput {
     floats: [FloatDictInput]
     booleans: [BooleanDictInput]
     strings: [StringDictInput]
+    objects: [ObjectDictInput]
+}
+
+type ObjectDict {
+    key: String
+    value: JSON
 }
 
 type StringDict {
@@ -37,6 +44,11 @@ input StringDictInput {
     value: String!
 }
 
+input ObjectDictInput {
+    key: String!
+    value: JSON!
+}
+
 input IntegerDictInput {
     key: String!
     value: Int!
@@ -57,5 +69,5 @@ type Query {
 }
 
 type Mutation {
-    Save(integers: [IntegerDictInput], floats: [FloatDictInput], strings: [StringDictInput], booleans: [BooleanDictInput]) : Boolean @hasRole(requires: PLAYER)
+    Save(integers: [IntegerDictInput], floats: [FloatDictInput], strings: [StringDictInput], booleans: [BooleanDictInput], objects: [ObjectDictInput]) : Boolean @hasRole(requires: PLAYER)
 }
