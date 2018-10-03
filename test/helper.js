@@ -10,7 +10,6 @@ const {
 class Helper {
   constructor (server) {
     this.server = server
-    this.adminToken = ''
   }
   async Register (email, password) {
     mutationRegister.variables = {
@@ -20,6 +19,7 @@ class Helper {
     let res = await request(this.server)
       .post('/')
       .send(mutationRegister)
+      .expect(200)
     this.adminToken = res.body.data.register
   }
   async CreateGame (name, appid, secret) {

@@ -102,6 +102,7 @@ describe('A player', () => {
         expect(res.body.data.Load.booleans[0].key).toBe(mutationSaveState.variables.booleans[0].key)
         expect(res.body.data.Load.booleans[0].value).toBe(mutationSaveState.variables.booleans[0].value)
         expect(res.body.data.Load.objects[0].key).toBe(mutationSaveState.variables.objects[0].key)
+        expect(res.body.data.Load.objects[0].value).toEqual(mutationSaveState.variables.objects[0].value)
       })
   })
 
