@@ -1,12 +1,5 @@
 // const debug = require('debug')('service:state')
 class SaveState extends require('../service') {
-  constructor (db) {
-    super(db)
-    this.db.mongodb.booleans = db.mongodb.collection('booleans')
-    this.db.mongodb.strings = db.mongodb.collection('strings')
-    this.db.mongodb.objects = db.mongodb.collection('objects')
-  }
-
   async save (player, state) {
     if (state.strings) await this.SaveString(player, state.strings)
     if (state.integers) await this.SaveInteger(player, state.integers)
@@ -17,15 +10,15 @@ class SaveState extends require('../service') {
   }
 
   async SaveString (player, strings) {
-    await this.db.mongodb.strings.bulkWrite(Options(player, strings))
+    await this.db.mongodb.collection('strings').bulkWrite(Options(player, strings))
   }
 
   async SaveBoolean (player, booleans) {
-    await this.db.mongodb.booleans.bulkWrite(Options(player, booleans))
+    await this.db.mongodb.collection('booleans').bulkWrite(Options(player, booleans))
   }
 
   async SaveObjects (player, objects) {
-    await this.db.mongodb.objects.bulkWrite(Options(player, objects))
+    await this.db.mongodb.collection('objects').bulkWrite(Options(player, objects))
   }
 
   async SaveInteger (player, integers) {
