@@ -1,21 +1,22 @@
-const State = require('../../service/player/state')
+const SaveState = require('../../service/player/saveState')
+const LoadState = require('../../service/player/loadState')
 
 exports.resolver = {
   State: {
     integers (root, params, context) {
-      return new State(context.db).loadIntegers(context.player)
+      return new LoadState(context.db).integers(context.player)
     },
     floats (root, params, context) {
-      return new State(context.db).loadFloats(context.player)
+      return new LoadState(context.db).floats(context.player)
     },
     strings (root, params, context) {
-      return new State(context.db).loadStrings(context.player)
+      return new LoadState(context.db).strings(context.player)
     },
     booleans (root, params, context) {
-      return new State(context.db).loadBooleans(context.player)
+      return new LoadState(context.db).booleans(context.player)
     },
     objects (root, params, context) {
-      return new State(context.db).loadObjects(context.player)
+      return new LoadState(context.db).objects(context.player)
     }
   },
   Query: {
@@ -25,7 +26,7 @@ exports.resolver = {
   },
   Mutation: {
     async Save (root, state, context) {
-      return new State(context.db).save(context.player, state)
+      return new SaveState(context.db).save(context.player, state)
     }
   }
 }

@@ -1,5 +1,5 @@
 // const debug = require('debug')('service:state')
-class State extends require('../service') {
+class SaveState extends require('../service') {
   constructor (db) {
     super(db)
     this.db.mongodb.booleans = db.mongodb.collection('booleans')
@@ -35,25 +35,6 @@ class State extends require('../service') {
   async SaveFloat (player, floats) {
     await this.db.sequelize.Float.bulkCreate(setPlayerId(player, floats), { updateOnDuplicate: true })
   }
-
-  async loadStrings (player) {
-    return this.db.mongodb.strings.find({ playerId: player.id }).toArray()
-  }
-
-  async loadBooleans (player) {
-    return this.db.mongodb.booleans.find({ playerId: player.id }).toArray()
-  }
-
-  async loadObjects (player) {
-    return this.db.mongodb.objects.find({ playerId: player.id }).toArray()
-  }
-
-  async loadIntegers (player) {
-    return this.db.sequelize.Integer.findAll({ where: { playerId: player.id }, attributes: ['key', 'value'] })
-  }
-  async loadFloats (player) {
-    return this.db.sequelize.Float.findAll({ where: { playerId: player.id }, attributes: ['key', 'value'] })
-  }
 }
 
 const setPlayerId = (player, state) => {
@@ -82,4 +63,4 @@ const Options = (player, state) => {
   return ops
 }
 
-module.exports = State
+module.exports = SaveState
