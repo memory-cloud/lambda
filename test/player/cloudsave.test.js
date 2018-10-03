@@ -7,7 +7,7 @@ const Setup = require('../setup')
 const {
   mutationSaveState,
   queryLoadState
-} = require('../graphql')
+} = require('./queries')
 
 describe('A player', () => {
   var server

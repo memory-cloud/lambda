@@ -1,5 +1,5 @@
 const request = require('supertest')
-const { mutationChangePassword } = require('../graphql')
+const { mutationChangePassword } = require('./queries')
 const Helper = require('../helper')
 const Setup = require('../setup')
 

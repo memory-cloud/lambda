@@ -6,7 +6,7 @@ const Setup = require('../setup')
 const {
   mutationCompleteAchievement,
   queryAchievements
-} = require('../graphql')
+} = require('./queries')
 
 describe('A player', () => {
   var server

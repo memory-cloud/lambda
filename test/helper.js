@@ -1,10 +1,11 @@
 const request = require('supertest')
 
+const { mutationRegister } = require('./auth/queries')
+
 const {
-  mutationRegister,
   mutationCreateGame,
   mutationCreateAchievement
-} = require('./graphql')
+} = require('./admin/queries')
 
 class Helper {
   constructor (server) {

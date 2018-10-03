@@ -10,7 +10,7 @@ const {
   queryFriendsIntLeaderboard,
   queryGlobalFloatLeaderboard,
   queryFriendsFloatLeaderboard
-} = require('../graphql')
+} = require('./queries')
 
 describe('A player', () => {
   var server

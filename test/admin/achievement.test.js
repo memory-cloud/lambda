@@ -4,7 +4,7 @@ const {
   mutationUpdateAchievement,
   queryReadAchievement,
   mutationDeleteAchievement
-} = require('../graphql')
+} = require('./queries')
 const debug = require('debug')('test')
 const Helper = require('../helper')
 const Setup = require('../setup')

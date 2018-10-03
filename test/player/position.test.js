@@ -10,7 +10,7 @@ const {
   queryGlobalFloatPosition,
   queryFriendsIntPosition,
   queryFriendsFloatPosition
-} = require('../graphql')
+} = require('./queries')
 
 describe('A player', () => {
   var server

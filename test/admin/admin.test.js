@@ -4,7 +4,7 @@ const {
   queryMe,
   queryGames,
   queryGame
-} = require('../graphql')
+} = require('./queries')
 const Setup = require('../setup')
 
 describe('An admin', () => {

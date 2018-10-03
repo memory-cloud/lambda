@@ -1,5 +1,5 @@
 const request = require('supertest')
-const { queryLogin } = require('../graphql')
+const { queryLogin } = require('./queries')
 const Helper = require('../helper')
 const Setup = require('../setup')
 
