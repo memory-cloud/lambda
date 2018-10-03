@@ -4,39 +4,39 @@ const AchievementRepository = require('../../service/admin/achievementRepository
 
 exports.resolver = {
   Game: {
-    async achievements (game, _, context) {
-      return new AchievementRepository(context.db).findByGame(game)
+    async achievements (game, _, { db }) {
+      return new AchievementRepository(db).findByGame(game)
     },
-    async players (game, _, context) {
-      return new GameRepository(context.db).playersCount(game)
+    async players (game, _, { db }) {
+      return new GameRepository(db).playersCount(game)
     }
   },
   Query: {
-    me (_, args, context) {
-      return new AdminRepository(context.db).me(context.admin)
+    me (_, args, { db, admin }) {
+      return new AdminRepository(db).me(admin)
     },
-    async games (_, args, context) {
-      return new GameRepository(context.db).games(context.admin)
+    async games (_, args, { db, admin }) {
+      return new GameRepository(db).games(admin)
     },
-    game (_, { id }, context) {
-      return new GameRepository(context.db).game(context.admin, id)
+    game (_, { id }, { db, admin }) {
+      return new GameRepository(db).game(admin, id)
     },
-    async readAchievement (_, { id }, context) {
-      return new AchievementRepository(context.db).readAchievement(context.admin, id)
+    async readAchievement (_, { id }, { db, admin }) {
+      return new AchievementRepository(db).readAchievement(admin, id)
     }
   },
   Mutation: {
-    async createGame (_, { game }, context) {
-      return new GameRepository(context.db).createGame(context.admin, game)
+    async createGame (_, { game }, { db, admin }) {
+      return new GameRepository(db).createGame(admin, game)
     },
-    async createAchievement (_, { achievement }, context) {
-      return new AchievementRepository(context.db).createAchievement(context.admin, achievement)
+    async createAchievement (_, { achievement }, { db, admin }) {
+      return new AchievementRepository(db).createAchievement(admin, achievement)
     },
-    async updateAchievement (_, { achievement }, context) {
-      return new AchievementRepository(context.db).updateAchievement(context.admin, achievement)
+    async updateAchievement (_, { achievement }, { db, admin }) {
+      return new AchievementRepository(db).updateAchievement(admin, achievement)
     },
-    async deleteAchievement (_, { id }, context) {
-      return new AchievementRepository(context.db).deleteAchievement(context.admin, id)
+    async deleteAchievement (_, { id }, { db, admin }) {
+      return new AchievementRepository(db).deleteAchievement(admin, id)
     }
 
   }

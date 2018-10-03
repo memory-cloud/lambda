@@ -2,13 +2,13 @@ const AchievementRepository = require('../../service/player/achievementRepositor
 
 exports.resolver = {
   Query: {
-    async Achievements (db, params, context) {
-      return new AchievementRepository(context.db).getAchievementsByPlayer(context.player)
+    async Achievements (_, params, { db, player }) {
+      return new AchievementRepository(db).getAchievementsByPlayer(player)
     }
   },
   Mutation: {
-    async CompleteAchievement (db, { title }, context) {
-      return new AchievementRepository(context.db).completeAchievement(context.player, title)
+    async CompleteAchievement (_, { title }, { db, player }) {
+      return new AchievementRepository(db).completeAchievement(player, title)
     }
   }
 }

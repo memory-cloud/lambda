@@ -3,30 +3,30 @@ const LoadState = require('../../service/player/loadState')
 
 exports.resolver = {
   State: {
-    integers (root, params, context) {
-      return new LoadState(context.db).integers(context.player)
+    integers (_, params, { db, player }) {
+      return new LoadState(db).integers(player)
     },
-    floats (root, params, context) {
-      return new LoadState(context.db).floats(context.player)
+    floats (_, params, { db, player }) {
+      return new LoadState(db).floats(player)
     },
-    strings (root, params, context) {
-      return new LoadState(context.db).strings(context.player)
+    strings (_, params, { db, player }) {
+      return new LoadState(db).strings(player)
     },
-    booleans (root, params, context) {
-      return new LoadState(context.db).booleans(context.player)
+    booleans (_, params, { db, player }) {
+      return new LoadState(db).booleans(player)
     },
-    objects (root, params, context) {
-      return new LoadState(context.db).objects(context.player)
+    objects (_, params, { db, player }) {
+      return new LoadState(db).objects(player)
     }
   },
   Query: {
-    Load (root, params, context) {
+    Load (_, params, context) {
       return context
     }
   },
   Mutation: {
-    async Save (root, state, context) {
-      return new SaveState(context.db).save(context.player, state)
+    async Save (_, state, { db, player }) {
+      return new SaveState(db).save(player, state)
     }
   }
 }
