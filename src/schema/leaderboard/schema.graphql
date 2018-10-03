@@ -2,15 +2,21 @@ type ScoreInt {
     id: Int
     fbid: BigInt
     score: BigInt
+    position: Int
 }
 
 type ScoreFloat {
     id: Int
     fbid: BigInt
     score: Float
+    position: Int
 }
 
 type Query {
+    GlobalIntPosition(key: String!): ScoreInt
+    GlobalFloatPosition(key: String!): ScoreFloat
+    FriendsIntPosition(key: String!): ScoreInt
+    FriendsFloatPosition(key: String!): ScoreFloat
     FriendsIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: FACEBOOK)
     GlobalIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: PLAYER)
     GlobalFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: PLAYER)

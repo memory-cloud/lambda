@@ -14,7 +14,7 @@ class RedisDatabase {
     this.redis.select(config.db)
     this.redis.get = util.promisify(this.redis.get).bind(this.redis)
 
-    this.redis.GetFromCache = async (id) => {
+    this.redis.getId = async (id) => {
       const response = await this.redis.get(id)
       if (!response) throw new Error('Cache not found')
       debug(`${id} from cache`)

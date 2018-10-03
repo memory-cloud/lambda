@@ -4,8 +4,9 @@ const redis = require('../database/redis')
 
 module.exports = (req, res, next) => {
   req.context = {}
-  req.context.db = database.sequelize
-  req.context.mongo = mongo.mongodb
-  req.context.redis = redis.redis
+  req.context.db = {}
+  req.context.db.sequelize = database.sequelize
+  req.context.db.mongodb = mongo.mongodb
+  req.context.db.redis = redis.redis
   next()
 }

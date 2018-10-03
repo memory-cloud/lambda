@@ -28,7 +28,7 @@ class Setup {
   }
 
   static async afterEach () {
-    await mongodb.dropDatabase()
+    return mongodb.dropDatabase()
   }
 }
 

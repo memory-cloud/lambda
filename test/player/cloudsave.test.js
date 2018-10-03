@@ -1,4 +1,4 @@
-const Facebook = require('../../src/service/facebook')
+const Facebook = require('../../src/service/player/facebookService')
 const debug = require('debug')('test')
 const request = require('supertest')
 const Helper = require('../helper')
@@ -15,7 +15,7 @@ describe('A player', () => {
   var helper
   beforeAll(async () => {
     server = await Setup.setup()
-    playersToken = await new Facebook(`${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
+    playersToken = await new Facebook(null, `${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
     helper = new Helper(server)
   })
 
@@ -58,6 +58,14 @@ describe('A player', () => {
           key: 'asd',
           value: false
         }
+      ],
+      objects: [
+        {
+          key: 'asd',
+          value: {
+            asd: 'asd'
+          }
+        }
       ]
     }
 
@@ -69,6 +77,7 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
+        debug(res.body)
         expect(res.body.data.Save).toBe(true)
       })
 
@@ -92,6 +101,7 @@ describe('A player', () => {
         expect(res.body.data.Load.strings[0].value).toBe(mutationSaveState.variables.strings[0].value)
         expect(res.body.data.Load.booleans[0].key).toBe(mutationSaveState.variables.booleans[0].key)
         expect(res.body.data.Load.booleans[0].value).toBe(mutationSaveState.variables.booleans[0].value)
+        expect(res.body.data.Load.objects[0].key).toBe(mutationSaveState.variables.objects[0].key)
       })
   })
 

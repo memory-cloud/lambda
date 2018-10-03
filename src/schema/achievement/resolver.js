@@ -1,4 +1,4 @@
-const AchievementRepository = require('../../database/sequelize/repository/achievementRepository')
+const AchievementRepository = require('../../service/player/achievementRepository')
 
 exports.resolver = {
   Query: {

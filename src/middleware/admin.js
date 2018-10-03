@@ -1,5 +1,5 @@
 const debug = require('debug')('middleware:admin')
-const AdminRepository = require('../database/sequelize/repository/adminRepository')
+const AdminRepository = require('../service/admin/adminRepository')
 
 module.exports = async (req, res, next) => {
   if (!req.headers.admin) return next()

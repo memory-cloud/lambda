@@ -1,7 +1,7 @@
 const debug = require('debug')('database:sequelize')
 const Sequelize = require('sequelize')
 const config = require('../../config/sequelize')[process.env.NODE_ENV]
-const Model = require('./model/index')
+const Model = require('./model')
 
 class Database {
   constructor () {
@@ -34,6 +34,8 @@ class Database {
     this.sequelize.Game = Model.get('Game', this.sequelize)
     this.sequelize.Achievement = Model.get('Achievement', this.sequelize)
     this.sequelize.Player = Model.get('Player', this.sequelize)
+    this.sequelize.Integer = Model.get('Integer', this.sequelize)
+    this.sequelize.Float = Model.get('Float', this.sequelize)
   }
 
   async sync (force) {

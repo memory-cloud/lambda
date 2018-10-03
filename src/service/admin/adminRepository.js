@@ -1,19 +1,19 @@
 // const debug = require('debug')('repository:admin')
 const jwt = require('jsonwebtoken')
 const jwtdecode = require('jwt-decode')
-const Repository = require('./repository')
-const { AdminNotFoundError, TokenExpiredError } = require('../../../error')
+const Service = require('../service')
+const { AdminNotFoundError, TokenExpiredError } = require('../../error')
 
-class AdminRepository extends Repository {
+class AdminRepository extends Service {
   async findByToken (token) {
-    const admin = await this.db.Admin.findOne({ where: { id: verify(token) }, attributes: ['password', 'id'] })
+    const admin = await this.db.sequelize.Admin.findOne({ where: { id: verify(token) }, attributes: ['password', 'id'] })
     if (!admin) throw new AdminNotFoundError()
     await jwt.verify(token, admin.password)
     return admin
   }
 
   async me (admin) {
-    admin = await this.db.Admin.findById(admin.id)
+    admin = await this.db.sequelize.Admin.findById(admin.id)
     if (!admin) throw new AdminNotFoundError()
     return admin
   }

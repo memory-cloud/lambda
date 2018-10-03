@@ -1,13 +1,13 @@
 // const debug = require('debug')('repository:auth')
 const jwt = require('jsonwebtoken')
-const Repository = require('./repository')
+const Service = require('../service')
 // const SendVerificationEmail = require('service/sendgrid')
 // const crypto = require('crypto')
-const { WrongCredentialsError } = require('../../../error')
+const { WrongCredentialsError } = require('../../error')
 
-class AuthRepository extends Repository {
+class AuthRepository extends Service {
   async login (email, password) {
-    const admin = await this.db.Admin.findOne({ where: { email: email }, attributes: ['id', 'password'] })
+    const admin = await this.db.sequelize.Admin.findOne({ where: { email: email }, attributes: ['id', 'password'] })
     if (!admin) throw new WrongCredentialsError()
     await admin.validPassword(password)
     return jwt.sign(getPayload(admin), admin.password)
@@ -15,8 +15,8 @@ class AuthRepository extends Repository {
 
   async register (email, password) {
     if (process.env.OPEN === 'false') throw new Error('Registration is closed')
-    const admin = await this.db.Admin.create({ email: email, password: password })
-    // const admin = await this.db.Admin.create({ email: email, password: password, verification: crypto.randomBytes(32).toString('base64') })
+    const admin = await this.db.sequelize.Admin.create({ email: email, password: password })
+    // const admin = await this.db.sequelize.Admin.create({ email: email, password: password, verification: crypto.randomBytes(32).toString('base64') })
     // await SendVerificationEmail(admin)
     return jwt.sign(getPayload(admin), admin.password)
   }
@@ -29,7 +29,7 @@ class AuthRepository extends Repository {
   }
 
   // async confirm (email, confirmation) {
-  //   const admin = await this.db.Admin.findOne({ where: { email: email, verification: confirmation } })
+  //   const admin = await this.sequelize.Admin.findOne({ where: { email: email, verification: confirmation } })
   //   if (!admin) throw new Error('Not match')
   //   admin.verification = null
   //   return admin.save

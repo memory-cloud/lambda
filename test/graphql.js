@@ -113,12 +113,13 @@ module.exports = {
             }`
   },
   mutationSaveState: {
-    query: `mutation ($integers: [IntegerDictInput], $floats: [FloatDictInput], $booleans: [BooleanDictInput], $strings: [StringDictInput]) {
+    query: `mutation ($integers: [IntegerDictInput], $floats: [FloatDictInput], $booleans: [BooleanDictInput], $strings: [StringDictInput], $objects: [ObjectDictInput]) {
               Save (
                 integers: $integers
                 floats: $floats
                 booleans: $booleans
                 strings: $strings
+                objects: $objects
               )
             }
     `
@@ -139,6 +140,10 @@ module.exports = {
                   value
                 }
                 strings {
+                  key
+                  value
+                }
+                objects {
                   key
                   value
                 }
@@ -174,6 +179,7 @@ module.exports = {
               FriendsFloatLeaderboard(key: $key){
                 id
                 score
+                position
               }
             }`
   },
@@ -194,6 +200,34 @@ module.exports = {
                 description
                 image
                 completedAt
+              }
+            }`
+  },
+  queryGlobalIntPosition: {
+    query: `query ($key: String!) {
+              GlobalIntPosition(key: $key) {
+                position
+              }
+            }`
+  },
+  queryGlobalFloatPosition: {
+    query: `query ($key: String!) {
+              GlobalFloatPosition(key: $key) {
+                position
+              }
+            }`
+  },
+  queryFriendsIntPosition: {
+    query: `query ($key: String!) {
+              FriendsIntPosition(key: $key) {
+                position
+              }
+            }`
+  },
+  queryFriendsFloatPosition: {
+    query: `query ($key: String!) {
+              FriendsFloatPosition(key: $key) {
+                position
               }
             }`
   }

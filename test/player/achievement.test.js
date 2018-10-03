@@ -15,7 +15,7 @@ describe('A player', () => {
 
   beforeAll(async () => {
     server = await Setup.setup()
-    playersToken = await new Facebook(`${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
+    playersToken = await new Facebook(null, `${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
     helper = new Helper(server)
   })
 
