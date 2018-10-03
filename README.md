@@ -12,19 +12,38 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=backend-memorycloud&metric=sqale_index)](https://sonarcloud.io/dashboard?id=backend-memorycloud)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=backend-memorycloud&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=backend-memorycloud)
 
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/rafaelnsantos/backendmemorycloud)
 
 # Memory Cloud
 
-## Running the app
+Backend platform for games
+
+## Features
+
+- [x] Facebook login
+- [x] Save and load player's state(integers, floats, booleans, strings and JSON objects)
+- [x] Float and integer Global and Friends leaderboard
+- [x] Float and integer Global and Friends position on leaderboard
+- [x] Admin dashboard
+- [x] Achievements
+
+## Running
 
 Rename .env.example to .env
 
-Set mysql settings in .env
+Set enviroment settings in .env
 
 ```
 npm install
 
 npm run dev
+```
+
+MySQL, Redis and MongoDB are required.
+
+Can be started with:
+```
+docker-compose up -d
 ```
 
 ## Running tests
@@ -46,3 +65,5 @@ npm run local-test
 ### Travis
 
 Create environment variables TEST_APPID and TEST_APPSECRET
+
+
