@@ -13,10 +13,10 @@ type ScoreFloat {
 }
 
 type Query {
-    GlobalIntPosition(key: String!): ScoreInt
-    GlobalFloatPosition(key: String!): ScoreFloat
-    FriendsIntPosition(key: String!): ScoreInt
-    FriendsFloatPosition(key: String!): ScoreFloat
+    GlobalIntPosition(key: String!): ScoreInt @hasRole(requires: PLAYER)
+    GlobalFloatPosition(key: String!): ScoreFloat @hasRole(requires: PLAYER)
+    FriendsIntPosition(key: String!): ScoreInt @hasRole(requires: FACEBOOK)
+    FriendsFloatPosition(key: String!): ScoreFloat @hasRole(requires: FACEBOOK)
     FriendsIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: FACEBOOK)
     GlobalIntLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreInt] @hasRole(requires: PLAYER)
     GlobalFloatLeaderboard(top: Int = 100, key: String!, page: Int = 0): [ScoreFloat] @hasRole(requires: PLAYER)
