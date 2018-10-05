@@ -1,5 +1,8 @@
 module.exports = {
   setupTestFrameworkScriptFile: './jest.setup.js',
   verbose: true,
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  coverageDirectory: './coverage/',
+  collectCoverage: true,
+  coverageReporters: ['lcov']
 }

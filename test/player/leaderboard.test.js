@@ -1,4 +1,3 @@
-const Facebook = require('../../src/service/player/facebookService')
 const debug = require('debug')('test')
 const request = require('supertest')
 const Helper = require('../helper')
@@ -20,7 +19,7 @@ describe('A player', () => {
   beforeAll(async () => {
     server = await Setup.setup()
     helper = new Helper(server)
-    playersToken = await new Facebook(null, `${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
+    playersToken = await helper.GetTestTokens()
   })
 
   beforeEach(async () => {

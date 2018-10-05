@@ -1,4 +1,5 @@
 const request = require('supertest')
+const Facebook = require('../src/service/player/facebookService')
 
 const { mutationRegister } = require('./auth/queries')
 
@@ -47,6 +48,9 @@ class Helper {
       .set('admin', this.adminToken)
       .send(mutationCreateAchievement)
       .expect(200)
+  }
+  async GetTestTokens () {
+    return new Facebook(null, `${process.env.TEST_APPID}|${process.env.TEST_APPSECRET}`).getTestTokens()
   }
 }
 
