@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest --env node --coverage --runInBand",
+    "test": "jest --env node --runInBand",
     "local-test": "NODE_ENV=testing npm test",
     "travis-test": "NODE_ENV=travis npm test",
     "start": "NODE_ENV=production node server.js",
