@@ -22,17 +22,24 @@ services:
     ports:
       - 6379:6379
     restart: always
-#  memorycloud:
-#    build: ./
-#    depends_on:
-#     - "db"
-#    restart: always
-#    environment:
-#      MYSQL_HOST: db
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: root
-#      MYSQL_DATABASE: memorycloud
-#      MONGODB_URI: mongodb://mongodb:27017/memorycloud
+  memorycloud:
+    build: .
+    depends_on:
+      - "db"
+      - "mongodb"
+      - "redis"
+    ports:
+    - 1337:1337
+    restart: always
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: memorycloud
+      MONGODB_URI: mongodb://mongodb
+      MONGODB_DATABASE: memorycloud
+      REDIS_URL: redis://redis
+      DEBUG: '*, -sequelize:*'
 
 volumes:
   db_data:
