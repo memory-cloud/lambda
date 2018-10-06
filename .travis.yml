@@ -24,3 +24,6 @@ script:
   - npm run lint
   - npm run travis-test
   - sonar-scanner
+
+after_success:
+  - "curl -H \"Content-Type: application/json\" --data '{\"build\": true}' -X POST https://registry.hub.docker.com/u/rafaelnds/memory-cloud/trigger/$DOCKER_TOKEN/"
