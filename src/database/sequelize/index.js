@@ -29,9 +29,6 @@ class Database {
       password: config.password,
       dialect: config.dialect,
       operatorsAliases: Sequelize.Op,
-      dialectOptions: {
-        multipleStatements: true
-      },
       pool: {
         max: 10,
         idle: 500
