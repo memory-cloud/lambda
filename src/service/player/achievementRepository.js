@@ -13,7 +13,7 @@ class AchievementRepository extends Service {
 
   async getAchievementsByPlayer (player) {
     const achievements = await this.db.sequelize.query(
-      `SELECT a.image, a.title, a.description, pa.createdAt AS completedAt
+      `SELECT a.image, a.title, a.description, pa.completedAt
       FROM Achievements a
       LEFT JOIN PlayerHasAchievements pa ON (pa.AchievementId = a.id AND pa.PlayerId = :PlayerId)
       WHERE a.GameId = :GameId

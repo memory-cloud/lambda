@@ -4,7 +4,7 @@ class Player extends Sequelize.Model {
   static init (sequelize, DataTypes) {
     return super.init({
       fbid: {
-        type: Sequelize.BIGINT,
+        type: DataTypes.BIGINT,
         allowNull: false,
         unique: true
       }
