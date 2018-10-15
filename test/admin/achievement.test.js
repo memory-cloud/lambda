@@ -35,7 +35,7 @@ describe('An admin', () => {
 
   it('should create a valid achievement', () => {
     mutationCreateAchievement.variables = {
-      gameId: 1,
+      GameId: 1,
       title: 'title 2',
       description: 'description 2',
       image: 'https://www.example.com/img.png'
@@ -74,7 +74,7 @@ describe('An admin', () => {
 
   it('should not create achievement in not own game', () => {
     mutationCreateAchievement.variables = {
-      gameId: 5,
+      GameId: 5,
       title: 'title 2',
       description: 'description 2',
       image: 'https://www.example.com/img.png'

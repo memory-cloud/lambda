@@ -92,7 +92,7 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.GlobalIntPosition.position).toBe(2)
+        expect(res.body.data.GlobalIntPosition).toBe(2)
       })
   })
 
@@ -108,7 +108,7 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.GlobalFloatPosition.position).toBe(1)
+        expect(res.body.data.GlobalFloatPosition).toBe(1)
       })
   })
 
@@ -124,7 +124,7 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.FriendsIntPosition.position).toBe(2)
+        expect(res.body.data.FriendsIntPosition).toBe(2)
       })
   })
 
@@ -140,7 +140,7 @@ describe('A player', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.errors).toBeUndefined()
-        expect(res.body.data.FriendsFloatPosition.position).toBe(1)
+        expect(res.body.data.FriendsFloatPosition).toBe(1)
       })
   })
 })

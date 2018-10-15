@@ -27,7 +27,7 @@ input GameInput {
 input AchievementInput {
     title: String!
     description: String!
-    gameId: Int!
+    GameId: Int!
     image: URL!
 }
 

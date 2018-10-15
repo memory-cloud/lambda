@@ -58,11 +58,11 @@ module.exports = {
             }`
   },
   mutationCreateAchievement: {
-    query: `mutation ($title: String!, $description: String!, $gameId: Int!, $image: URL!) {
+    query: `mutation ($title: String!, $description: String!, $GameId: Int!, $image: URL!) {
               createAchievement(achievement:{
                 title: $title
                 description: $description
-                gameId: $gameId
+                GameId: $GameId
                 image: $image
               }){
                 id

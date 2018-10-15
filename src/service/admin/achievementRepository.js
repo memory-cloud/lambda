@@ -3,8 +3,8 @@ const GameRepository = require('./gameRepository')
 const { AchievementNotFoundError } = require('../../error')
 class AchievementRepository extends Service {
   async createAchievement (admin, achievement) {
-    const game = await new GameRepository(this.db).game(admin, achievement.gameId)
-    achievement.gameId = game.id
+    const game = await new GameRepository(this.db).game(admin, achievement.GameId)
+    achievement.GameId = game.id
     return this.db.sequelize.Achievement.create(achievement)
   }
 
@@ -17,7 +17,7 @@ class AchievementRepository extends Service {
   async readAchievement (admin, id) {
     const achievement = await this.db.sequelize.Achievement.findOne({ where: { id: id } })
     if (!achievement) throw new AchievementNotFoundError()
-    await new GameRepository(this.db).game(admin, achievement.gameId)
+    await new GameRepository(this.db).game(admin, achievement.GameId)
     return achievement
   }
 
@@ -28,7 +28,7 @@ class AchievementRepository extends Service {
   }
 
   async findByGame (game) {
-    return this.db.sequelize.Achievement.findAll({ where: { gameId: game.id } })
+    return this.db.sequelize.Achievement.findAll({ where: { GameId: game.id } })
   }
 }
 

@@ -66,7 +66,6 @@ module.exports = {
               FriendsFloatLeaderboard(key: $key){
                 id
                 score
-                position
               }
             }`
   },
@@ -92,30 +91,22 @@ module.exports = {
   },
   queryGlobalIntPosition: {
     query: `query ($key: String!) {
-              GlobalIntPosition(key: $key) {
-                position
-              }
+              GlobalIntPosition(key: $key)
             }`
   },
   queryGlobalFloatPosition: {
     query: `query ($key: String!) {
-              GlobalFloatPosition(key: $key) {
-                position
-              }
+              GlobalFloatPosition(key: $key)
             }`
   },
   queryFriendsIntPosition: {
     query: `query ($key: String!) {
-              FriendsIntPosition(key: $key) {
-                position
-              }
+              FriendsIntPosition(key: $key)
             }`
   },
   queryFriendsFloatPosition: {
     query: `query ($key: String!) {
-              FriendsFloatPosition(key: $key) {
-                position
-              }
+              FriendsFloatPosition(key: $key)
             }`
   }
 }

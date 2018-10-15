@@ -31,7 +31,7 @@ class SaveState extends require('../service') {
 }
 
 const setPlayerId = (player, state) => {
-  state.forEach(element => { element.playerId = player.id })
+  state.forEach(element => { element.PlayerId = player.id })
   return state
 }
 
@@ -42,7 +42,7 @@ const Options = (player, state) => {
     ops.push(
       {
         updateOne: {
-          filter: { playerId: player.id, key: item.key },
+          filter: { PlayerId: player.id, key: item.key },
           update: {
             $set: {
               value: item.value

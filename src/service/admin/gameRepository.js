@@ -4,24 +4,24 @@ const { GameNotFoundError } = require('../../error')
 
 class GameRepository extends Service {
   async games (admin) {
-    return this.db.sequelize.Game.findAll({ where: { adminId: admin.id } })
+    return this.db.sequelize.Game.findAll({ where: { AdminId: admin.id } })
   }
 
   async game (admin, id) {
-    const game = await this.db.sequelize.Game.findOne({ where: { adminId: admin.id, id: id } })
+    const game = await this.db.sequelize.Game.findOne({ where: { AdminId: admin.id, id: id } })
     if (!game) throw new GameNotFoundError()
     return game
   }
 
   async createGame (admin, game) {
-    game.adminId = admin.id
+    game.AdminId = admin.id
     return this.db.sequelize.Game.create(game)
   }
 
   async playersCount (game) {
     const players = await this.db.sequelize.query(
-      'SELECT COUNT(*) FROM players WHERE gameId = :gameId',
-      { replacements: { gameId: game.id } }
+      'SELECT COUNT(*) FROM Players WHERE GameId = :GameId',
+      { replacements: { GameId: game.id } }
     )
     return players[0][0]['COUNT(*)']
   }

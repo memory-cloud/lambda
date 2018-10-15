@@ -2,6 +2,7 @@ const request = require('supertest')
 const { mutationCreateGame } = require('./queries')
 const Helper = require('../helper')
 const Setup = require('../setup')
+const debug = require('debug')('test:game')
 
 describe('An admin', () => {
   var server

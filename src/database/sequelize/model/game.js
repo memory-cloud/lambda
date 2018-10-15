@@ -1,42 +1,49 @@
 const Sequelize = require('sequelize')
 
-module.exports = (sequelize) => {
-  const Game = sequelize.define('game', {
-    name: {
-      type: Sequelize.STRING,
-      validate: {
-        notEmpty: true
+class Game extends Sequelize.Model {
+  static init (sequelize, DataTypes) {
+    return super.init({
+      name: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: true
+        },
+        allowNull: false
       },
-      allowNull: false
-    },
-    appid: {
-      type: Sequelize.BIGINT,
-      unique: true,
-      allowNull: false,
-      validate: {
-        is: /^[0-9]+$/i
+      appid: {
+        type: DataTypes.BIGINT,
+        unique: true,
+        allowNull: false,
+        validate: {
+          is: /^[0-9]+$/i
+        }
+      },
+      secret: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [6, 255],
+          notEmpty: true,
+          is: /^[A-Za-z0-9-]+$/i
+        },
+        allowNull: false
       }
-    },
-    secret: {
-      type: Sequelize.STRING,
-      validate: {
-        len: [6, 255],
-        notEmpty: true,
-        is: /^[A-Za-z0-9-]+$/i
-      },
-      allowNull: false
-    }
-  }, {
-    indexes: [{
-      fields: ['id', 'appid', 'secret']
-    }]
-  })
-
-  Game.prototype.getToken = function () {
-    return this.appid + '|' + this.secret
+    }, {
+      indexes: [{
+        fields: ['appid']
+      }, {
+        fields: ['AdminId']
+      }],
+      sequelize
+    })
   }
 
-  Game.belongsTo(sequelize.Admin, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+  static associate (models) {
+    this.admin = this.belongsTo(models.Admin, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+  }
 
-  return Game
+  getToken () {
+    return this.appid + '|' + this.secret
+  }
 }
+
+module.exports = Game

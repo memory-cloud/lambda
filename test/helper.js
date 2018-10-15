@@ -1,6 +1,6 @@
 const request = require('supertest')
 const Facebook = require('../src/service/player/facebookService')
-
+const debug = require('debug')('test:debug')
 const { mutationRegister } = require('./auth/queries')
 
 const {
@@ -36,9 +36,9 @@ class Helper {
       .send(mutationCreateGame)
       .expect(200)
   }
-  async CreateAchievement (gameId, title, description, image) {
+  async CreateAchievement (GameId, title, description, image) {
     mutationCreateAchievement.variables = {
-      gameId: gameId,
+      GameId: GameId,
       title: title,
       description: description,
       image: image

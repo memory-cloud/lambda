@@ -1,38 +1,29 @@
 const Sequelize = require('sequelize')
 
-module.exports = (sequelize) => {
-  const Player = sequelize.define('player', {
-    fbid: {
-      type: Sequelize.BIGINT,
-      allowNull: false,
-      unique: 'compositeIndex'
-    },
-    gameId: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: sequelize.Game
-      },
-      unique: 'compositeIndex',
-      allowNull: false
-    }
-  }, {
-    indexes: [{
-      fields: ['id', 'fbid', 'gameId']
-    }] }
-  )
-  Player.belongsToMany(sequelize.Achievement, {
-    through: sequelize.define('player_has_achievements', {
-      createdAt: {
-        type: 'TIMESTAMP',
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-        allowNull: false
-      },
-      updatedAt: {
-        type: Sequelize.STRING,
-        defaultValue: null,
-        allowNull: true
+class Player extends Sequelize.Model {
+  static init (sequelize, DataTypes) {
+    return super.init({
+      fbid: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        unique: true
       }
+    }, {
+      indexes: [{
+        fields: ['GameId']
+      }, {
+        fields: ['fbid']
+      }],
+      sequelize
     })
-  })
-  return Player
+  }
+
+  static associate (models) {
+    this.game = this.belongsTo(models.Game, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+    this.achievements = this.belongsToMany(models.Achievement, {
+      through: models.PlayerAchievement
+    })
+  }
 }
+
+module.exports = Player

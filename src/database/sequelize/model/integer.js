@@ -1,30 +1,36 @@
 const Sequelize = require('sequelize')
-module.exports = (sequelize) => {
-  const Integer = sequelize.define('integer', {
-    key: {
-      type: Sequelize.STRING,
-      validate: {
-        notEmpty: true
+
+class Integer extends Sequelize.Model {
+  static init (sequelize, DataTypes) {
+    return super.init({
+      key: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: true
+        },
+        index: true,
+        allowNull: false
       },
-      unique: 'compositeIndex',
-      allowNull: false
-    },
-    value: {
-      type: Sequelize.BIGINT,
-      allowNull: false
-    },
-    playerId: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: sequelize.Player
-      },
-      unique: 'compositeIndex',
-      allowNull: false
-    }
-  }, {
-    indexes: [{
-      fields: ['playerId', 'key', 'value']
-    }]
-  })
-  return Integer
+      value: {
+        type: DataTypes.BIGINT,
+        allowNull: false
+      }
+    }, {
+      indexes: [{
+        fields: ['PlayerId']
+      }, {
+        fields: ['key']
+      }, {
+        fields: ['PlayerId', 'key'],
+        unique: true
+      }],
+      sequelize
+    })
+  }
+
+  static associate (models) {
+    this.player = this.belongsTo(models.Player, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+  }
 }
+
+module.exports = Integer

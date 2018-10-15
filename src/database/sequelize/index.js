@@ -1,7 +1,13 @@
 const debug = require('debug')('database:sequelize')
 const Sequelize = require('sequelize')
 const config = require('../../config/sequelize')[process.env.NODE_ENV]
-const Model = require('./model')
+const Achievement = require('./model/achievement')
+const Player = require('./model/player')
+const Admin = require('./model/admin')
+const Game = require('./model/game')
+const Float = require('./model/float')
+const Integer = require('./model/integer')
+const PlayerAchievement = require('./model/playerAchievements')
 
 class Database {
   constructor () {
@@ -23,6 +29,9 @@ class Database {
       password: config.password,
       dialect: config.dialect,
       operatorsAliases: Sequelize.Op,
+      dialectOptions: {
+        multipleStatements: true
+      },
       pool: {
         max: 10,
         idle: 500
@@ -30,12 +39,28 @@ class Database {
       logging: process.env.DEBUG ? require('debug')('sequelize:logging') : false
     })
 
-    this.sequelize.Admin = Model.get('Admin', this.sequelize)
-    this.sequelize.Game = Model.get('Game', this.sequelize)
-    this.sequelize.Achievement = Model.get('Achievement', this.sequelize)
-    this.sequelize.Player = Model.get('Player', this.sequelize)
-    this.sequelize.Integer = Model.get('Integer', this.sequelize)
-    this.sequelize.Float = Model.get('Float', this.sequelize)
+    const models = {
+      Achievement: Achievement.init(this.sequelize, Sequelize),
+      Admin: Admin.init(this.sequelize, Sequelize),
+      Game: Game.init(this.sequelize, Sequelize),
+      Player: Player.init(this.sequelize, Sequelize),
+      Float: Float.init(this.sequelize, Sequelize),
+      Integer: Integer.init(this.sequelize, Sequelize),
+      PlayerAchievement: PlayerAchievement.init(this.sequelize, Sequelize)
+    }
+
+    // Run `.associate` if it exists,
+    // ie create relationships in the ORM
+    Object.values(models)
+      .filter(model => typeof model.associate === 'function')
+      .forEach(model => model.associate(models))
+
+    this.sequelize.Achievement = models.Achievement
+    this.sequelize.Admin = models.Admin
+    this.sequelize.Game = models.Game
+    this.sequelize.Player = models.Player
+    this.sequelize.Float = models.Float
+    this.sequelize.Integer = models.Integer
   }
 
   async sync (force) {
@@ -53,16 +78,16 @@ class Database {
     const sequelize = new Sequelize(null, config.username, config.password, {
       dialect: 'mysql',
       host: config.host,
-      logging: false,
+      logging: process.env.DEBUG ? require('debug')('sequelize:create-db') : false,
       operatorsAliases: false
     })
 
-    return sequelize.query('CREATE DATABASE IF NOT EXISTS ' + config.database + ';').then(() => sequelize.close())
+    return sequelize.query(`CREATE DATABASE IF NOT EXISTS ${config.database}`).then(() => sequelize.close())
   }
 
   async dropDatabase () {
     debug('drop')
-    return this.sequelize.query('DROP DATABASE IF EXISTS ' + config.database + ';')
+    return this.sequelize.query(`DROP DATABASE IF EXISTS ${config.database}`)
   }
 }
 

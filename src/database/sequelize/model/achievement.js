@@ -1,42 +1,46 @@
 const Sequelize = require('sequelize')
 
-module.exports = (sequelize) => {
-  const Achievement = sequelize.define('achievement', {
-    title: {
-      type: Sequelize.STRING,
-      validate: {
-        notEmpty: true
+class Achievement extends Sequelize.Model {
+  static init (sequelize, DataTypes) {
+    return super.init({
+      title: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: true
+        },
+        allowNull: false
       },
-      unique: 'compositeIndex',
-      allowNull: false
-    },
-    description: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
-    },
-    gameId: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: sequelize.Game
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
       },
-      unique: 'compositeIndex',
-      allowNull: false
-    },
-    image: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        is: /^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|png)+$/i
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          is: /^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|png)+$/i
+        }
       }
-    }
-  }, {
-    indexes: [{
-      fields: ['id', 'title', 'gameId']
-    }]
-  })
-  return Achievement
+    }, {
+      indexes: [{
+        fields: ['title', 'GameId'],
+        unique: true
+      }, {
+        fields: ['title']
+      }, {
+        fields: ['GameId']
+      }],
+      sequelize
+    })
+  }
+
+  static associate (models) {
+    this.game = this.belongsTo(models.Game, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+  }
 }
+
+module.exports = Achievement
